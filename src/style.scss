@@ -1,0 +1,142 @@
+@import url(./assets/styles/bootstrap.min.css);
+@import url(./assets/styles/variables.scss);
+@import url(./assets/styles/input.scss);
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--bs-blue);
+  border-radius: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#app {
+  padding: 3.5rem 2rem 1rem 2rem;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.title {
+  position: relative;
+  margin: 0;
+  width: max-content;
+  font-weight: 900;
+}
+
+.title::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 100px;
+  height: 7px;
+  background: rgba(153, 0, 0, 1);
+  translate: 200px -50%;
+  z-index: 1;
+}
+
+img {
+  -webkit-user-drag: none;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  appearance: auto;
+  border: thin solid transparent;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:active {
+  border-color: var(--red);
+}
+.btn:focus {
+  box-shadow: none !important;
+}
+
+[class*="col"] > button {
+  height: 100%;
+}
+
+.card {
+  background-color: whitesmoke;
+  border-radius: 10px;
+  border-color: whitesmoke;
+  transition: all 0.25s;
+
+  &:hover {
+    border-color: lightgray;
+  }
+}
+
+.list-group {
+  .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+    border: transparent;
+    border-bottom: thin solid lightgray;
+    font-size: small;
+
+    &:last-child {
+      border-radius: 0;
+    }
+  }
+}
+
+p {
+  color: gray;
+  font-weight: 100;
+}

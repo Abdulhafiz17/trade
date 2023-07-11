@@ -1,0 +1,189 @@
+<script>
+import api from "../../server/api";
+import Pagination from "../../components/Pagination/Pagination.vue";
+import AddUser from "../../components/Modal/AddUser.vue";
+export default {
+  name: "Users",
+  components: { Pagination, AddUser },
+  data() {
+    return {
+      users: {
+        current_page: 0,
+        pages: 1,
+        limit: 25,
+        data: [],
+      },
+    };
+  },
+  computed: {
+    current_user() {
+      return this.$store.getters.user;
+    },
+    branch_id() {
+      return this.$route.query.branch_id || this.current_user.branch_id;
+    },
+  },
+  created() {
+    this.get();
+  },
+  methods: {
+    get() {
+      const param = {
+        branch_id: this.branch_id,
+        page: this.users.current_page,
+        limit: this.users.limit,
+      };
+      api.get_users(param).then((res) => {
+        this.users = res.data;
+      });
+    },
+    format(number) {
+      return String(
+        "(" +
+          String(number).substring(0, 2) +
+          ") " +
+          String(number).substring(2, 5) +
+          " " +
+          String(number).substring(5, 7) +
+          " " +
+          String(number).substring(7, 9)
+      );
+    },
+    role(role) {
+      if (role == "admin") return "Admin";
+      else if (role == "branch_admin") return "Filial admin";
+      else if (role == "seller") return "Sotuvchi";
+    },
+  },
+};
+</script>
+
+<template>
+  <AddUser ref="addUser" />
+
+  <div class="row gap-3">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="title">HODIMLAR</h2>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-7 text-end">
+              + Hodim qo'shish
+              <button
+                class="btn btn-sm btn-success"
+                @click="$refs.addUser.open()"
+              >
+                <img
+                  src="../../assets/icons/Add_ring-white.svg"
+                  alt="Add_ring-white"
+                />
+              </button>
+            </div>
+            <div class="col-md-5">
+              <div class="row">
+                <div class="col-8">
+                  <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Qidiruv:"
+                  />
+                </div>
+                <div class="col-4">
+                  <button class="btn btn-sm btn-primary">
+                    <img src="../../assets/icons/Search_alt.svg" alt="" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row table-responsive" style="max-height: 80vh">
+        <div class="col-md-6 mb-3" v-for="item in users.data" :key="item">
+          <div class="card">
+            <div class="card-body">
+              <strong>{{ item.name }}</strong>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <span>Tel:</span>
+                  <a :href="'tel:+998' + item.phone">{{
+                    "+998 " + format(item.phone)
+                  }}</a>
+                </li>
+                <li class="list-group-item">
+                  <span>Lavozim:</span>
+                  <span>{{ role(item.role) }}</span>
+                </li>
+                <li class="list-group-item">
+                  <span>Daromad:</span>
+                  <span>{{ item.balance }}</span>
+                </li>
+              </ul>
+              <ul class="list-group">
+                <li class="list-group-item" :toggle-collapse="'pay-' + item.id">
+                  <span>Pul berish</span>
+                </li>
+                <Collapse :id="'pay-' + item.id">
+                  <input
+                    class="form-control w-100"
+                    type="number"
+                    min="0"
+                    step="any"
+                    placeholder="Summa:"
+                    required
+                  />
+                  <input
+                    class="form-control w-100"
+                    type="text"
+                    placeholder="Izoh:"
+                    required
+                  />
+                  <button class="btn btn-sm btn-danger mt-2 mx-1 float-end">
+                    <img
+                      src="../../assets/icons/Cancel-white.svg"
+                      alt="Cancel"
+                    />
+                  </button>
+                  <button class="btn btn-sm btn-success mt-2 mx-1 float-end">
+                    <img
+                      src="../../assets/icons/Done_round-white.svg"
+                      alt="Done_round"
+                    />
+                  </button>
+                </Collapse>
+              </ul>
+              <div class="row mt-3">
+                <div class="col">
+                  <RouterLink
+                    class="btn btn-sm w-100 btn-primary"
+                    :to="{ path: '/user', query: { user_id: item.id } }"
+                  >
+                    <img src="../../assets/icons/Info.svg" alt="Info" />
+                  </RouterLink>
+                </div>
+                <div class="col">
+                  <RouterLink
+                    class="btn btn-sm w-100 btn-warning"
+                    :to="{
+                      path: '/user',
+                      query: { user_id: item.id, content: 'edit' },
+                    }"
+                  >
+                    <img src="../../assets/icons/Edit.svg" alt="Info" />
+                  </RouterLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <Pagination v-model="users" @get="get" />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

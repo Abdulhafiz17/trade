@@ -1,0 +1,15 @@
+export default {
+  id: 0,
+  user_id: 0,
+  customer_id: 0,
+  branch_id: 0,
+  branch_id_admin: 0,
+  category_id: 0,
+  order_id: 0,
+  status: "",
+  from_time: "",
+  to_time: "",
+  search: "",
+  page: 0,
+  limit: 0,
+};
