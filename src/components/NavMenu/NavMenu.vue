@@ -25,8 +25,8 @@ export default {
         {
           icon: "Basket.svg",
           name: "Kassa",
-          path: "/",
-          role: [role],
+          path: "/order",
+          role: ["branch_admin"],
         },
         {
           icon: "Group.svg",
