@@ -140,3 +140,28 @@ p {
   color: gray;
   font-weight: 100;
 }
+
+[currency] {
+  position: relative;
+}
+
+[currency]::before {
+  content: attr(currency);
+  position: absolute;
+  padding: 5px;
+  background-color: white;
+  border: thin solid lightgray;
+  border-radius: 10px;
+  font-size: larger;
+  font-weight: 600;
+  translate: 0 -101%;
+  opacity: 0;
+  scale: 0;
+  transition: opacity 0.25s;
+  z-index: 1;
+}
+
+[currency]:has(input:focus)::before {
+  opacity: 1;
+  scale: 1;
+}
