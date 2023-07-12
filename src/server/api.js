@@ -62,6 +62,54 @@ export default {
   update_customer(data) {
     return server(`update_customer`, "put", data);
   },
+  // order
+  get_orders(p = query) {
+    const status = p.status ? `status=${p.status}` : ``;
+    const time =
+      p.from_time && p.to_time
+        ? `from_time=${p.from_time}&to_time=${p.to_time}`
+        : ``;
+    return server(
+      `get_orders?branch_id=${p.branch_id}&order_id=${p.order_id}&seller_id=${p.seller_id}&user_id=${p.user_id}&customer_id=${p.customer_id}&${status}&${time}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  create_order() {
+    return server(`create_order`, "post");
+  },
+  remove_order(p = query) {
+    return server(`remove_order/${p.order_id}`, "delete");
+  },
+  order_confirmation(data) {
+    return server(`order_confirmation`, "put", data);
+  },
+  get_returned_products(p = query) {
+    const time =
+      p.from_time && p.to_time
+        ? `from_time=${p.from_time}&to_time=${p.to_time}`
+        : ``;
+    return server(
+      `get_returned_products?order_id=${p.order_id}&branch_id=${p.branch_id}&${time}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  return_product(data) {
+    return server(`return_product`, "put", data);
+  },
+  // trade
+  get_trades(p = query) {
+    return server(`get_trades/${p.order_id}?branch_id=${p.branch_id}`);
+  },
+  to_trade(data) {
+    return server(`to_trade`, "post", data);
+  },
+  to_trade_for_tarozi(data) {
+    return server(`to_trade_for_tarozi`, "post", data);
+  },
+  update_trade(data) {
+    return server(`update_trade`, "put", data);
+  },
+  remove_trade(p = query) {
+    return server(`remove_trade/${p.trade_id}`, "delete");
+  },
   // loan
   get_loans(p = query) {
     const status = p.status ? `status=${p.status}` : ``;

@@ -35,6 +35,12 @@ export default createRouter({
       component: () => import("../views/Statistic/Statistic.vue"),
     },
     {
+      path: "/order",
+      name: "Buyurtma",
+      beforeEnter: auth,
+      component: () => import("../views/Order/Order.vue"),
+    },
+    {
       path: "/user",
       name: "Hodim",
       beforeEnter: auth,
