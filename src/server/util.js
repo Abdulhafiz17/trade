@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 
 export default {
+  payment_types: ["naqd", "plastik", "click"],
   currency(number = Number()) {
     return Intl.NumberFormat().format(Number(number).toFixed(2));
   },
@@ -15,6 +16,9 @@ export default {
         " " +
         String(number).substring(7, 9)
     );
+  },
+  captalize(text = String()) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
   },
   toast(icon = "success", title = "Amaliyot bajarildi !") {
     const Toast = Swal.mixin({

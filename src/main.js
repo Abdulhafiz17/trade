@@ -3,6 +3,8 @@ import App from "./App.vue";
 import Tab from "./components/Tab/Tab.vue";
 import Modal from "./components/Modal/Modal.vue";
 import Collapse from "./components/Collapse/Collapse.vue";
+import Dropdown from "./components/Dropdown/Dropdown.vue";
+import DataDropdown from "./components/DataDropdown/DataDropdown.vue";
 import "./style.scss";
 import router from "./router/index";
 import store from "./store/index";
@@ -18,6 +20,8 @@ app
   .component("Tab", Tab)
   .component("Modal", Modal)
   .component("Collapse", Collapse)
+  .component("Dropdown", Dropdown)
+  .component("DataDropdown", DataDropdown)
   .use(router)
   .use(store)
   .mount("#app");

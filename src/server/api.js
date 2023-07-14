@@ -110,6 +110,42 @@ export default {
   remove_trade(p = query) {
     return server(`remove_trade/${p.trade_id}`, "delete");
   },
+  // product
+  get_faulty_products() {
+    return server(`get_faulty_products`);
+  },
+  get_products(p = query) {
+    const search = p.search ? `search=${p.search}` : ``;
+    const status = p.status ? `status=${p.status}` : ``;
+    return server(
+      `get_products?${search}&${status}&branch_id=${p.branch_id}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  get_products_for_trade(p = query) {
+    return server(`get_products_for_trade/${p.code}`);
+  },
+  get_opened_products(p = query) {
+    const search = p.search ? `search=${p.search}` : ``;
+    return server(
+      `get_opened_products?${search}&branch_id=${p.branch_id}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  get_opened_products_for_trade(p = query) {
+    return server(`get_opened_products_for_trade/${p.o_pr_id}`);
+  },
+  update_product(data) {
+    return server(`update_product`, "put", data);
+  },
+  // unit
+  get_olchov_birliglar(p = query) {
+    return server(`get_olchov_birliglar/${p.code}`);
+  },
+  create_olchov_birligi(data) {
+    return server(`create_olchov_birligi`, "post", data);
+  },
+  delete_olchov_birligi(p = query) {
+    return server(`delete_olchov_birligi/${p.id}`, "delete");
+  },
   // loan
   get_loans(p = query) {
     const status = p.status ? `status=${p.status}` : ``;

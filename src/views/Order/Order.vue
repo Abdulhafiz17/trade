@@ -15,6 +15,25 @@ export default {
         data: [],
       },
       balance: null,
+      customer_type: "",
+      order_confirm: {
+        order_id: 0,
+        customer_name: "",
+        customer_phone: 0,
+        customer_type: "",
+        discount: 0,
+        money: [
+          {
+            paid_money: 0,
+            type: "",
+          },
+        ],
+        loan_repayment_date: "",
+        seller_id: 0,
+        muddat: 0,
+        percent: 0,
+        date: "",
+      },
     };
   },
   computed: {
@@ -41,9 +60,10 @@ export default {
       };
       api.get_orders(param).then((res) => {
         this.orders = res.data;
-        if (res.data.data.length) this.order = res.data.data[0];
-        else this.order = null;
-        this.$refs.trades.getTrades();
+        this.order = res.data.data[0];
+        this.$nextTick(() => {
+          this.$refs.trades.getTrades();
+        });
       });
     },
     changeOrder() {
@@ -79,15 +99,20 @@ export default {
     </div>
     <div class="col-12">
       <div class="order">
-        <h4 v-if="order">
-          <span class="number">{{ order.Orders.ordinal_number }}</span>
+        <h4>
+          <span class="number" v-if="order">
+            {{ order.Orders.ordinal_number }}
+          </span>
           Buyurtma
         </h4>
         <div>
           <strong class="balance">
             {{ $util.currency(balance) + " so'm" }}
           </strong>
-          <button class="btn-group p-0 btn btn-outline-light">
+          <button
+            class="btn-group p-0 btn btn-outline-light"
+            @click="$refs.confirmModal.openModal()"
+          >
             <span class="btn-sm text-success">Tasdiqlash</span>
             <span class="btn-sm bg-success">
               <img src="../../assets/icons/Done_all_round.svg" alt="" />
@@ -97,6 +122,126 @@ export default {
       </div>
     </div>
   </div>
+
+  <Modal ref="confirmModal">
+    <template #header>
+      <strong>
+        {{ $util.currency(balance) + " so'm" }}
+      </strong>
+    </template>
+    <template #body>
+      <div class="row gap-2">
+        <div class="col-12">
+          <div class="row">
+            <div class="col">
+              <button
+                class="btn btn-light w-100"
+                :class="{ 'text-light bg-primary': customer_type == '' }"
+                @click="customer_type = ''"
+              >
+                Umumiy
+              </button>
+            </div>
+            <div class="col">
+              <button
+                class="btn btn-light w-100"
+                :class="{
+                  'text-light bg-primary': customer_type == 'customer',
+                }"
+                @click="customer_type = 'customer'"
+              >
+                Doimiy
+              </button>
+            </div>
+            <div class="col">
+              <button
+                class="btn btn-light w-100"
+                :class="{ 'text-light bg-primary': customer_type == 'new' }"
+                @click="customer_type = 'new'"
+              >
+                Yangi
+              </button>
+            </div>
+          </div>
+        </div>
+        <label class="col-12">
+          To'lov summa
+          <div class="row gap-1">
+            <div
+              class="col-12"
+              v-for="(item, i) in order_confirm.money"
+              :key="item"
+            >
+              <div
+                class="input-group"
+                :currency="$util.currency(item.paid_money)"
+              >
+                <input
+                  type="number"
+                  class="form-control"
+                  min="0"
+                  step="any"
+                  required
+                  v-model="item.paid_money"
+                />
+                <div class="input-group-text">so'm</div>
+                <div class="input-group-append">
+                  <select class="form-select" required v-model="item.type">
+                    <option hidden value="">to'lov turi</option>
+                    <option
+                      v-for="item1 in $util.payment_types"
+                      :key="item1"
+                      :value="item1"
+                    >
+                      {{ item1 }}
+                    </option>
+                  </select>
+                </div>
+                <div class="input-group-append">
+                  <button
+                    class="btn-success"
+                    @click="
+                      order_confirm.money.push({
+                        paid_money: 0,
+                        type: '',
+                      })
+                    "
+                    v-if="i == 0 && order_confirm.money.length < 3"
+                  >
+                    <img
+                      src="../../assets/icons/Add_square.svg"
+                      alt="Add_square"
+                    />
+                  </button>
+                  <button
+                    class="btn-danger"
+                    @click="order_confirm.money.splice(i, 1)"
+                    v-else
+                  >
+                    <img src="../../assets/icons/del_alt.svg" alt="del_alt" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </label>
+        <label class="col-12">
+          Chegirma summa
+          <div class="input-group">
+            <input
+              type="number"
+              class="form-control"
+              min="0"
+              step="any"
+              required
+              v-model="order_confirm.discount"
+            />
+            <div class="input-group-text">so'm</div>
+          </div>
+        </label>
+      </div>
+    </template>
+  </Modal>
 </template>
 
 <style scoped lang="scss">
@@ -149,5 +294,15 @@ export default {
       border-bottom-left-radius: 0;
     }
   }
+}
+
+.input-group-append button {
+  padding: 5px 0.5rem;
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+
+select {
+  border-radius: inherit;
 }
 </style>

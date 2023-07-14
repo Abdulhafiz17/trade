@@ -109,6 +109,7 @@ export default {
 
 .v-modal-footer {
   padding: 0 1rem 1rem 1rem;
+  text-align: end;
 }
 
 .v-toggle-modal-enter-active {

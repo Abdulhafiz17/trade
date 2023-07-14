@@ -8,6 +8,8 @@ export default {
   category_id: 0,
   order_id: 0,
   trade_id: 0,
+  o_pr_id: 0,
+  code: 0,
   status: "",
   from_time: "",
   to_time: "",
