@@ -41,15 +41,15 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style>
 .v-dropdown {
   position: relative;
-  margin: 10px 0;
 }
 
 .v-dropdown-menu {
   position: absolute;
   padding: 1px;
+  width: 100%;
   min-width: 100px;
   background-color: white;
   border: thin solid rgb(100, 108, 255);
@@ -75,5 +75,16 @@ export default {
     opacity: 1;
     transform: 0 5px;
   }
+}
+.v-dropdown [toggle] {
+  position: relative;
+  padding-right: 1.5rem !important;
+}
+
+.v-dropdown [toggle]::after {
+  content: "▾";
+  position: absolute;
+  right: 1%;
+  color: gray;
 }
 </style>

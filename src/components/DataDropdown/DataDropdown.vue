@@ -13,31 +13,123 @@ export default {
     return {
       id: Date.now(),
       list: [],
+      current_page: 0,
+      pages: 1,
     };
   },
-  created() {
-    this.get();
+  computed: {
+    current_user() {
+      return this.$store.getters.user;
+    },
+    request() {
+      const type = this.$props.type;
+      switch (type) {
+        case "user":
+          return "get_users";
+        default:
+          break;
+      }
+    },
+  },
+  mounted() {
+    this.list = [];
+    this.get(0);
   },
   methods: {
-    get() {},
+    get(page) {
+      const param = {
+        branch_id: this.current_user.branch_id,
+        page: page,
+        limit: 20,
+      };
+      api[this.request](param).then((res) => {
+        this.list = this.list.concat(res.data.data);
+        this.current_page = res.data.current_page;
+        this.pages = res.data.pages;
+      });
+    },
+    scroll(event) {
+      const element = event.target;
+      if (element.scrollTop + element.clientHeight >= element.scrollHeight) {
+        if (this.current_page < this.pages - 1) {
+          this.get(this.current_page + 1);
+        }
+      }
+    },
   },
 };
 </script>
 
 <template>
   <dropdown :id="type + id">
-    <button toggle>{{ modelValue[property] || $util.captalize(type) }}</button>
+    <button toggle>
+      {{ modelValue?.[property] || $util.captalize(type) }}
+    </button>
     <template #menu>
-      <ul class="list">
-        <li v-if="all" @click="$emit('update:modelValue', null)">Hammasi</li>
-        <li
-          v-for="item in list"
-          :key="item"
-          @click="$emit('update:modelValue', item)"
-        >
-          {{ item[property] }}
-        </li>
-      </ul>
+      <div class="table-responsive" @scroll="scroll($event)">
+        <ul class="list">
+          <li v-if="all" @click="$emit('update:modelValue', null)">Hammasi</li>
+          <li
+            v-for="item in list"
+            :key="item"
+            @click="$emit('update:modelValue', item)"
+          >
+            {{ item?.[property] }}
+          </li>
+        </ul>
+      </div>
     </template>
   </dropdown>
 </template>
+
+<style scoped>
+button {
+  width: 100%;
+}
+
+.table-responsive {
+  padding: 5px 0;
+  max-height: 20vh;
+  scrollbar-gutter: stable both-edges;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border: thin solid transparent;
+  border-radius: 10px;
+  list-style: none;
+}
+
+ul.list {
+  border-color: lightgray;
+}
+
+li {
+  padding: 5px;
+}
+
+li:first-child {
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+li:last-child {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+ul.list li {
+  border-bottom: thin solid lightgray;
+  cursor: pointer;
+}
+
+ul.list li:hover {
+  background-color: whitesmoke;
+}
+
+ul.list li:last-child {
+  border: none;
+}
+</style>
