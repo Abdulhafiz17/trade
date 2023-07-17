@@ -1,37 +1,35 @@
 <script>
 export default {
   name: "Dropdown",
-  props: {
-    id: {
-      required: true,
-    },
-  },
   data() {
     return {
       open: false,
     };
   },
-  computed: {
-    dropdown() {
-      return document.querySelector(`#${this.$props.id}`, `.v-dropdown`);
-    },
-    button() {
-      return this.dropdown.querySelector(`[toggle]`);
-    },
+  created() {
+    window.addEventListener("click", (event) => {
+      const element = event.target;
+      if (element.closest(".v-dropdown") !== this.$el) this.open = false;
+    });
   },
-  mounted() {
-    this.button.onclick = () => {
-      this.open = !this.open;
-    };
-    window.onclick = (event) => {
-      if (event.target !== this.button) this.open = false;
-    };
+  beforeUnmount() {
+    window.removeEventListener("click", {});
+  },
+  methods: {
+    clickDropdown(event) {
+      const element = event.target;
+      if (element.closest(`[toggle]`)) {
+        this.open = !this.open;
+      } else if (element.tagName !== "INPUT") {
+        this.open = false;
+      }
+    },
   },
 };
 </script>
 
 <template>
-  <div class="v-dropdown" :id="id">
+  <div class="v-dropdown" :open="open" @click="clickDropdown($event)">
     <slot></slot>
     <Transition name="v-toggle-dropdown">
       <div class="v-dropdown-menu" v-if="open">

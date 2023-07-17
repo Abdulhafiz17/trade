@@ -12,6 +12,7 @@ export default {
   data() {
     return {
       id: Date.now(),
+      search: "",
       list: [],
       current_page: 0,
       pages: 1,
@@ -26,9 +27,14 @@ export default {
       switch (type) {
         case "user":
           return "get_users";
+        case "customer":
+          return "get_customers";
         default:
           break;
       }
+    },
+    searchable() {
+      if (this.$props.type == "customer") return true;
     },
   },
   mounted() {
@@ -39,6 +45,7 @@ export default {
     get(page) {
       const param = {
         branch_id: this.current_user.branch_id,
+        search: this.search,
         page: page,
         limit: 20,
       };
@@ -67,6 +74,17 @@ export default {
     </button>
     <template #menu>
       <div class="table-responsive" @scroll="scroll($event)">
+        <input
+          type="search"
+          class="form-control form-control-sm mb-1"
+          placeholder="qidiruv:"
+          v-model="search"
+          @keyup="
+            list = [];
+            get(0);
+          "
+          v-if="searchable"
+        />
         <ul class="list">
           <li v-if="all" @click="$emit('update:modelValue', null)">Hammasi</li>
           <li
@@ -91,6 +109,10 @@ button {
   padding: 5px 0;
   max-height: 20vh;
   scrollbar-gutter: stable both-edges;
+}
+
+input {
+  border-radius: 10px;
 }
 
 ul {
