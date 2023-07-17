@@ -69,7 +69,7 @@ export default {
 
 <template>
   <dropdown :id="type + id">
-    <button toggle>
+    <button type="button" toggle>
       {{ modelValue?.[property] || $util.captalize(type) }}
     </button>
     <template #menu>
