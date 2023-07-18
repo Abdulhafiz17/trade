@@ -65,6 +65,12 @@ export default createRouter({
       component: () => import("../views/Customers/Customer.vue"),
     },
     {
+      path: "/expense",
+      name: "Chiqim",
+      beforeEnter: auth,
+      component: () => import("../views/Expense/Expense.vue"),
+    },
+    {
       path: "/setting",
       name: "Sozlamalar",
       beforeEnter: auth,

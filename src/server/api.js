@@ -153,6 +153,73 @@ export default {
       `get_loans/${p.status}?branch_id=${p.branch_id}&customer_id=${p.customer_id}&order_id=${p.order_id}&page=${p.page}&limit=${p.limit}`
     );
   },
+  // fixed expense
+  get_fixed_expenses() {
+    return server(`get_fixed_expenses`);
+  },
+  create_fixed_expense(data) {
+    return server(`create_fixed_expense`, "post", data);
+  },
+  update_fixed_expense(data) {
+    return server(`update_fixed_expense`, "put", data);
+  },
+  // expense
+  get_variable_expenses(p = query) {
+    const time =
+      p.from_time && p.to_time
+        ? `from_time=${p.from_time}&to_time=${p.to_time}`
+        : ``;
+    return server(
+      `get_variable_expenses?branch_id=${p.branch_id}&${time}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  fixed_expenses_get(p = query) {
+    const time =
+      p.from_time && p.to_time
+        ? `from_time=${p.from_time}&to_time=${p.to_time}`
+        : ``;
+    return server(
+      `fixed_expenses_get?branch_id=${p.branch_id}&${time}&fixed_expense_id=${p.fixed_expense_id}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  get_party_expenses(p = query) {
+    return server(
+      `get_party_expenses/${p.party_id}?page=${p.page}&limit=${p.limit}`
+    );
+  },
+  get_market_expenses(p = query) {
+    const time =
+      p.from_time && p.to_time
+        ? `from_time=${p.from_time}&to_time=${p.to_time}`
+        : ``;
+    return server(
+      `get_market_expenses/${p.market_id}?${time}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  get_user_expenses(p = query) {
+    const time =
+      p.from_time && p.to_time
+        ? `from_time=${p.from_time}&to_time=${p.to_time}`
+        : ``;
+    return server(
+      `get_user_expenses?${p.user_id}&${time}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  pay_for_variable_expense(data) {
+    return server(`pay_for_variable_expense`, "post", data);
+  },
+  pay_for_party_expense(data) {
+    return server(`pay_for_party_expense`, "post", data);
+  },
+  pay_for_fixed_expense(data) {
+    return server(`pay_for_fixed_expense`, "post", data);
+  },
+  pay_for_market_expense(data) {
+    return server(`pay_for_market_expense`, "post", data);
+  },
+  pay_to_user(data) {
+    return server(`pay_to_user`, "post", data);
+  },
   // statistic
   get_trade_statistics(p = query) {
     const time_query =

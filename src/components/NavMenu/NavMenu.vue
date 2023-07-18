@@ -67,8 +67,8 @@ export default {
         {
           icon: "Paper.svg",
           name: "Chiqim",
-          path: "/",
-          role: [role],
+          path: "/expense",
+          role: ["branch_admin"],
         },
         {
           icon: "Setting_alt_line.svg",

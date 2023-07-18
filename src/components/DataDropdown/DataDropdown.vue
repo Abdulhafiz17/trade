@@ -30,6 +30,8 @@ export default {
           return "get_users";
         case "customer":
           return "get_customers";
+        case "currency":
+          return "get_currencies";
         default:
           break;
       }
@@ -51,7 +53,9 @@ export default {
         limit: 20,
       };
       api[this.request](param).then((res) => {
-        this.list = this.list.concat(res.data.data);
+        if (this.$props.type == "currency")
+          this.list = this.list.concat(res.data);
+        else this.list = this.list.concat(res.data.data);
         this.current_page = res.data.current_page;
         this.pages = res.data.pages;
       });

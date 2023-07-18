@@ -16,16 +16,19 @@ export default {
       },
       balance: null,
       customer_type: "",
+      customer: null,
+      loan_price: 0,
+      seller: null,
       order_confirm: {
         order_id: 0,
         customer_name: "",
-        customer_phone: 0,
+        customer_phone: "",
         customer_type: "",
         discount: 0,
         money: [
           {
             paid_money: 0,
-            type: "",
+            type: "naqd",
           },
         ],
         loan_repayment_date: "",
@@ -39,6 +42,15 @@ export default {
   computed: {
     current_user() {
       return this.$store.getters.user;
+    },
+    residual_payment() {
+      let residual = this.balance;
+      this.order_confirm.money.forEach((item) => {
+        residual -= item.paid_money;
+      });
+      residual -= this.order_confirm.discount;
+      residual -= this.loan_price;
+      return residual || 0;
     },
   },
   created() {
@@ -68,6 +80,10 @@ export default {
     },
     changeOrder() {
       this.$refs.trades.getTrades();
+    },
+    putOrder() {
+      this.order_confirm.order_id = this.order?.Orders.id;
+      console.log(this.order_confirm);
     },
   },
 };
@@ -130,11 +146,12 @@ export default {
       </strong>
     </template>
     <template #body>
-      <div class="row gap-2">
+      <form class="row gap-1" id="confirm-order" @submit.prevent="putOrder()">
         <div class="col-12">
           <div class="row">
             <div class="col">
               <button
+                type="button"
                 class="btn btn-light w-100"
                 :class="{ 'text-light bg-primary': customer_type == '' }"
                 @click="customer_type = ''"
@@ -144,6 +161,7 @@ export default {
             </div>
             <div class="col">
               <button
+                type="button"
                 class="btn btn-light w-100"
                 :class="{
                   'text-light bg-primary': customer_type == 'customer',
@@ -155,6 +173,7 @@ export default {
             </div>
             <div class="col">
               <button
+                type="button"
                 class="btn btn-light w-100"
                 :class="{ 'text-light bg-primary': customer_type == 'new' }"
                 @click="customer_type = 'new'"
@@ -162,6 +181,54 @@ export default {
                 Yangi
               </button>
             </div>
+          </div>
+        </div>
+        <div class="col-12" v-if="customer_type == 'customer'">
+          Mijoz
+          <DataDropdown
+            type="customer"
+            property="name"
+            v-model="customer"
+          ></DataDropdown>
+        </div>
+        <div class="col-12" v-if="customer_type == 'new'">
+          <div class="row">
+            <label class="col-md-6">
+              Ism
+              <input
+                type="text"
+                class="form-control"
+                required
+                v-model="order_confirm.customer_name"
+              />
+            </label>
+            <label class="col-md-6">
+              Telefon raqam
+              <div
+                class="input-group"
+                :tel="$util.tel(order_confirm.customer_phone)"
+              >
+                <div class="input-group-text">+998</div>
+                <input
+                  type="tel"
+                  class="form-control"
+                  minlength="9"
+                  maxlength="9"
+                  required
+                  v-model="order_confirm.customer_phone"
+                />
+              </div>
+            </label>
+            <label class="col-md-12">
+              Toifa
+              <select
+                class="form-select"
+                required
+                v-model="order_confirm.customer_type"
+              >
+                <option value="Premium">Premium</option>
+              </select>
+            </label>
           </div>
         </div>
         <label class="col-12">
@@ -192,10 +259,19 @@ export default {
                       v-for="item1 in $util.payment_types"
                       :key="item1"
                       :value="item1"
+                      :disabled="
+                        order_confirm.money.find((item2) => item2.type == item1)
+                      "
                     >
                       {{ item1 }}
                     </option>
                   </select>
+                </div>
+                <div
+                  class="input-group-text cursor"
+                  @click="item.paid_money = residual_payment"
+                >
+                  <i class="fa fa-money-bill"></i>
                 </div>
                 <div class="input-group-append">
                   <button
@@ -227,7 +303,10 @@ export default {
         </label>
         <label class="col-12">
           Chegirma summa
-          <div class="input-group">
+          <div
+            class="input-group"
+            :currency="$util.currency(order_confirm.discount)"
+          >
             <input
               type="number"
               class="form-control"
@@ -237,9 +316,62 @@ export default {
               v-model="order_confirm.discount"
             />
             <div class="input-group-text">so'm</div>
+            <div
+              class="input-group-text cursor"
+              @click="order_confirm.discount = residual_payment"
+            >
+              <i class="fa fa-money-bill"></i>
+            </div>
           </div>
         </label>
-      </div>
+        <label class="col-12" v-if="customer_type !== ''">
+          Nasiya summa
+          <div class="input-group" :currency="$util.currency(loan_price)">
+            <input
+              type="number"
+              class="form-control"
+              min="0"
+              step="any"
+              required
+              v-model="loan_price"
+            />
+            <div class="input-group-text">so'm</div>
+            <div
+              class="input-group-text cursor"
+              @click="loan_price = residual_payment"
+            >
+              <i class="fa fa-money-bill"></i>
+            </div>
+          </div>
+        </label>
+        <label class="col-12" v-if="loan_price">
+          Nasiyani qaytarish sana
+          <div class="input-group">
+            <input
+              type="date"
+              class="form-control"
+              required
+              v-model="order_confirm.loan_repayment_date"
+            />
+          </div>
+        </label>
+        <div class="col-12">
+          Hodim
+          <DataDropdown
+            type="user"
+            property="name"
+            v-model="seller"
+          ></DataDropdown>
+        </div>
+      </form>
+    </template>
+    <template #footer>
+      <button class="btn btn-success" form="confirm-order">
+        <img
+          src="../../assets/icons/Done_round-white.svg"
+          alt="Done_round-white"
+        />
+      </button>
     </template>
   </Modal>
 </template>
@@ -302,7 +434,7 @@ export default {
   border-bottom-left-radius: inherit;
 }
 
-select {
+.input-group select {
   border-radius: inherit;
 }
 </style>
