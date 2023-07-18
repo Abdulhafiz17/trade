@@ -53,7 +53,7 @@ export default {
   border: thin solid rgb(100, 108, 255);
   border-radius: 10px;
   translate: 0 5px;
-  z-index: 2;
+  z-index: 3;
 }
 
 .v-toggle-dropdown-enter-active {

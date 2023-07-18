@@ -74,7 +74,7 @@ export default {
 
 <template>
   <dropdown :id="type + id">
-    <button type="button" toggle>
+    <button type="button" class="btn" toggle>
       {{ modelValue?.[property] || $util.captalize(type) }}
     </button>
     <template #menu>
@@ -108,6 +108,7 @@ export default {
 <style scoped>
 button {
   width: 100%;
+  background-color: whitesmoke;
 }
 
 .table-responsive {

@@ -35,6 +35,28 @@ export default {
       };
       api.get_users(param).then((res) => {
         this.users = res.data;
+        this.users.data.forEach((item) => {
+          item.payment = {
+            currency: null,
+            money: 0,
+            currency_id: 0,
+            source: item.id,
+            comment: "",
+          };
+        });
+      });
+    },
+    payUser(item) {
+      item.payment.currency_id = item.payment.currency?.id || 0;
+      api.pay_to_user(item.payment).then(() => {
+        item.payment = {
+          currency: null,
+          money: 0,
+          currency_id: 0,
+          source: item.id,
+          comment: "",
+        };
+        this.$util.toast();
       });
     },
     format(number) {
@@ -70,16 +92,15 @@ export default {
         <div class="col-md-6">
           <div class="row">
             <div class="col-md-7 text-end">
-              + Hodim qo'shish
-              <button
-                class="btn btn-sm btn-success"
-                @click="$refs.addUser.open()"
-              >
-                <img
-                  src="../../assets/icons/Add_ring-white.svg"
-                  alt="Add_ring-white"
-                />
-              </button>
+              <div class="btn-group" @click="$refs.addUser.open()">
+                + Hodim qo'shish
+                <button class="btn btn-sm btn-success mx-1">
+                  <img
+                    src="../../assets/icons/Add_ring-white.svg"
+                    alt="Add_ring-white"
+                  />
+                </button>
+              </div>
             </div>
             <div class="col-md-5">
               <div class="row">
@@ -128,32 +149,65 @@ export default {
                   <span>Pul berish</span>
                 </li>
                 <Collapse :id="'pay-' + item.id">
-                  <input
-                    class="form-control w-100"
-                    type="number"
-                    min="0"
-                    step="any"
-                    placeholder="Summa:"
-                    required
-                  />
-                  <input
-                    class="form-control w-100"
-                    type="text"
-                    placeholder="Izoh:"
-                    required
-                  />
-                  <button class="btn btn-sm btn-danger mt-2 mx-1 float-end">
-                    <img
-                      src="../../assets/icons/Cancel-white.svg"
-                      alt="Cancel"
-                    />
-                  </button>
-                  <button class="btn btn-sm btn-success mt-2 mx-1 float-end">
-                    <img
-                      src="../../assets/icons/Done_round-white.svg"
-                      alt="Done_round"
-                    />
-                  </button>
+                  <form @submit.prevent="payUser(item)">
+                    <div
+                      class="input-group"
+                      :currency="$util.currency(item.payment.money)"
+                    >
+                      <input
+                        class="form-control"
+                        type="number"
+                        min="0"
+                        step="any"
+                        placeholder="Summa:"
+                        v-model="item.payment.money"
+                        required
+                      />
+                      <div class="input-group-append">
+                        <DataDropdown
+                          type="currency"
+                          property="currency"
+                          v-model="item.payment.currency"
+                        ></DataDropdown>
+                      </div>
+                    </div>
+                    <div class="input-group">
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="Izoh:"
+                        required
+                        v-model="item.payment.comment"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-danger mt-2 mx-1 float-end"
+                      @click="
+                        item.payment = {
+                          currency: null,
+                          money: 0,
+                          currency_id: 0,
+                          source: item.id,
+                          comment: '',
+                        }
+                      "
+                    >
+                      <img
+                        src="../../assets/icons/Cancel-white.svg"
+                        alt="Cancel"
+                      />
+                    </button>
+                    <button
+                      class="btn btn-sm btn-success mt-2 mx-1 float-end"
+                      :disabled="!item.payment.currency"
+                    >
+                      <img
+                        src="../../assets/icons/Done_round-white.svg"
+                        alt="Done_round"
+                      />
+                    </button>
+                  </form>
                 </Collapse>
               </ul>
               <div class="row mt-3">
@@ -187,3 +241,5 @@ export default {
     </div>
   </div>
 </template>
+
+<style scoped></style>
