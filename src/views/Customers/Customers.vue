@@ -48,7 +48,7 @@ export default {
     },
     getLoans(item) {
       const param = {
-        status: true,
+        status: false,
         branch_id: this.branch_id,
         customer_id: item.id,
         order_id: 0,
