@@ -61,6 +61,10 @@ button {
   transition: all 0.25s;
 }
 
+button:hover {
+  background-color: lightgray;
+}
+
 button:active {
   border-color: transparent;
 }
