@@ -4,6 +4,7 @@ export default {
   name: "DataDropdown",
   props: {
     modelValue: null,
+    data: Array,
     type: String,
     property: String,
     all: Boolean,
@@ -37,9 +38,9 @@ export default {
       if (this.$props.type == "customer") return true;
     },
   },
-  mounted() {
+  created() {
     this.list = [];
-    this.get(0);
+    if (!this.data) this.get(0);
   },
   methods: {
     get(page) {
@@ -88,7 +89,7 @@ export default {
         <ul class="list">
           <li v-if="all" @click="$emit('update:modelValue', null)">Hammasi</li>
           <li
-            v-for="item in list"
+            v-for="item in data || list"
             :key="item"
             @click="$emit('update:modelValue', item)"
           >
@@ -107,7 +108,7 @@ button {
 
 .table-responsive {
   padding: 5px 0;
-  max-height: 20vh;
+  max-height: 25vh;
   scrollbar-gutter: stable both-edges;
 }
 
