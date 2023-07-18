@@ -106,7 +106,7 @@ export default {
     </div>
     <div class="col-12">
       <div class="table-responsive" style="height: 62vh">
-        <table class="table table-sm">
+        <table class="table table-sm table-hover">
           <thead>
             <tr>
               <th>Chiqim</th>

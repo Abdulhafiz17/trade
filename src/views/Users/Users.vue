@@ -214,7 +214,10 @@ export default {
                 <div class="col">
                   <RouterLink
                     class="btn btn-sm w-100 btn-primary"
-                    :to="{ path: '/user', query: { user_id: item.id } }"
+                    :to="{
+                      path: '/user',
+                      query: { user_id: item.id, content: 'history' },
+                    }"
                   >
                     <img src="../../assets/icons/Info.svg" alt="Info" />
                   </RouterLink>
