@@ -69,29 +69,37 @@ export default {
   <div class="order">
     <div class="row">
       <div class="col-md">
-        <p>Buyurtma balansi</p>
+        <p>Sana</p>
+        <span>{{
+          order?.Orders?.time.replace("T", " ").substring(0, 16)
+        }}</span>
+      </div>
+      <div class="col-md">
+        <p>Umumiy balans</p>
         <strong>{{ $util.currency(order?.balance) }} so'm</strong>
       </div>
       <div class="col-md">
-        <p>Chegirma balansi</p>
+        <p>Chegirma</p>
         <strong>{{ $util.currency(order?.Orders?.discount) }} so'm</strong>
       </div>
       <div class="col-md" v-if="order?.incomes?.length">
         <p>To'lov</p>
-        <strong
+        <span
           v-for="item in order?.incomes"
           :key="item"
           v-show="item.Incomes.money"
         >
-          {{ $util.currency(item.Incomes.money) }}
-          so'm
+          <strong>
+            {{ $util.currency(item.Incomes.money) }}
+            so'm
+          </strong>
           {{ item.Incomes.type }}
           <br />
-        </strong>
+        </span>
       </div>
       <div class="col-md" v-if="order?.Customers">
         <p>Mijoz</p>
-        <strong>{{ order?.Customers?.name }}</strong>
+        <span>{{ order?.Customers?.name }}</span>
       </div>
     </div>
   </div>
@@ -100,5 +108,9 @@ export default {
 <style scoped lang="scss">
 .order {
   padding: 1rem;
+
+  .col-md {
+    white-space: nowrap;
+  }
 }
 </style>

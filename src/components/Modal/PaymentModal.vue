@@ -99,7 +99,7 @@ export default {
             </div>
           </div>
         </label>
-        <label class="col-12">
+        <label class="col-12" v-if="type !== 'loan'">
           Izoh
           <textarea
             cols="30"
