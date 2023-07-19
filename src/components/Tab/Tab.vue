@@ -7,6 +7,9 @@ export default {
       required: true,
     },
   },
+  emits: {
+    change: null,
+  },
   data() {
     return {
       active: 0,
@@ -19,6 +22,7 @@ export default {
       this.active = -1;
       this.timeout = setTimeout(() => {
         this.active = tab;
+        this.$emit("change");
       }, 100);
     },
   },
