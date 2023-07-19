@@ -22,7 +22,7 @@ export default {
       this.active = -1;
       this.timeout = setTimeout(() => {
         this.active = tab;
-        this.$emit("change");
+        this.$emit("change", this.active);
       }, 100);
     },
   },
