@@ -9,7 +9,7 @@ export default {
     property: String,
     all: Boolean,
   },
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "change"],
   data() {
     return {
       id: Date.now(),
@@ -38,6 +38,19 @@ export default {
     },
     searchable() {
       if (this.$props.type == "customer") return true;
+    },
+    title() {
+      const type = this.$props.type;
+      switch (type) {
+        case "user":
+          return "Hodim";
+        case "customer":
+          return "Mijoz";
+        case "currency":
+          return "Valyuta";
+        default:
+          break;
+      }
     },
   },
   created() {
@@ -68,6 +81,10 @@ export default {
         }
       }
     },
+    update(value) {
+      this.$emit("update:modelValue", value);
+      this.$emit("change");
+    },
   },
 };
 </script>
@@ -75,7 +92,7 @@ export default {
 <template>
   <dropdown :id="type + id">
     <button type="button" class="btn" toggle>
-      {{ modelValue?.[property] || $util.captalize(type) }}
+      {{ modelValue?.[property] || title }}
     </button>
     <template #menu>
       <div class="table-responsive" @scroll="scroll($event)">
@@ -91,12 +108,8 @@ export default {
           v-if="searchable"
         />
         <ul class="list">
-          <li v-if="all" @click="$emit('update:modelValue', null)">Hammasi</li>
-          <li
-            v-for="item in data || list"
-            :key="item"
-            @click="$emit('update:modelValue', item)"
-          >
+          <li v-if="all" @click="update(null)">Hammasi</li>
+          <li v-for="item in data || list" :key="item" @click="update(item)">
             {{ item?.[property] }}
           </li>
         </ul>

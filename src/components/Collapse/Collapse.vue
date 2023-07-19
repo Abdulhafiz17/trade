@@ -87,8 +87,10 @@ export default {
 [toggle-collapse]::after {
   content: "▾";
   position: absolute;
+  top: 50%;
   right: 1%;
   color: gray;
+  translate: 0 -50%;
 }
 
 .v-collapse-body {

@@ -89,6 +89,11 @@ export default {
   font-size: large;
 }
 
+.v-pagination select {
+  background-color: whitesmoke;
+  border: thin solid transparent;
+}
+
 .v-pagination > *:first-child {
   border-top-left-radius: inherit;
   border-bottom-left-radius: inherit;

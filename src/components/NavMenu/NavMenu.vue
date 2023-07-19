@@ -43,7 +43,7 @@ export default {
         {
           icon: "Wallet_alt.svg",
           name: "Nasiyalar",
-          path: "/",
+          path: "/loans",
           role: [role],
         },
         {
@@ -143,7 +143,7 @@ export default {
   translate: 0 -100%;
   transition: all 0.25s;
   overflow: auto;
-  z-index: 2;
+  z-index: 5;
 
   &.open {
     translate: 0;

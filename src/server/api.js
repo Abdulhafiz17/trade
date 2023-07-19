@@ -150,8 +150,20 @@ export default {
   get_loans(p = query) {
     const status = p.status ? `status=${p.status}` : ``;
     return server(
-      `get_loans/${p.status}?branch_id=${p.branch_id}&customer_id=${p.customer_id}&order_id=${p.order_id}&page=${p.page}&limit=${p.limit}`
+      `get_loans/${p.status}?customer_id=${p.customer_id}&order_id=${p.order_id}&page=${p.page}&limit=${p.limit}`
     );
+  },
+  get_loans_customer(p = query) {
+    const status = p.status ? `status=${p.status}` : ``;
+    return server(
+      `get_loans_customer/${p.status}?customer_id=${p.customer_id}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  get_loan(p = query) {
+    return server(`get_loan?order_id=${p.order_id}&loan_id=${p.loan_id}`);
+  },
+  take_loan(data) {
+    return server(`take_loan`, "post", data);
   },
   // income
   get_incomes(p = query) {

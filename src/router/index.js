@@ -71,6 +71,18 @@ export default createRouter({
       component: () => import("../views/Expense/Expense.vue"),
     },
     {
+      path: "/loans",
+      name: "Nasiyalar",
+      beforeEnter: auth,
+      component: () => import("../views/Loan/Loans.vue"),
+    },
+    {
+      path: "/loan",
+      name: "Nasiya",
+      beforeEnter: auth,
+      component: () => import("../views/Loan/Loan.vue"),
+    },
+    {
       path: "/setting",
       name: "Sozlamalar",
       beforeEnter: auth,
