@@ -90,9 +90,9 @@ export default {
 
 .v-close {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  padding: 0 5px;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0;
   color: black;
   border-color: transparent;
   background-color: transparent;

@@ -69,22 +69,23 @@ export default {
   <div class="order">
     <div class="row">
       <div class="col-md">
-        <p>Buyurtma balansi:</p>
+        <p>Buyurtma balansi</p>
         <strong>{{ $util.currency(order?.balance) }} so'm</strong>
       </div>
       <div class="col-md">
-        <p>Chegirma balansi:</p>
+        <p>Chegirma balansi</p>
         <strong>{{ $util.currency(order?.Orders?.discount) }} so'm</strong>
       </div>
       <div class="col-md" v-if="order?.incomes?.length">
-        <p>To'lovlar:</p>
+        <p>To'lov</p>
         <strong
           v-for="item in order?.incomes"
           :key="item"
           v-show="item.Incomes.money"
         >
-          {{ $util.currency(item.Incomes.money) + " " + item.Incomes.type }}
+          {{ $util.currency(item.Incomes.money) }}
           so'm
+          {{ item.Incomes.type }}
           <br />
         </strong>
       </div>

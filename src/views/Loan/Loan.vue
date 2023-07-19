@@ -1,10 +1,11 @@
 <script>
 import api from "../../server/api";
 import PaymentModal from "../../components/Modal/PaymentModal.vue";
+import OrderModal from "../../components/Modal/OrderModal.vue";
 import Pagination from "../../components/Pagination/Pagination.vue";
 export default {
   name: "Loan",
-  components: { Pagination, PaymentModal },
+  components: { Pagination, PaymentModal, OrderModal },
   data() {
     return {
       loan_id: this.$route.query.loan_id,
@@ -65,7 +66,12 @@ export default {
           >
             To'lov
           </button>
-          <button class="btn btn-sm btn-primary mx-2">Nasiya buyurtmasi</button>
+          <button
+            class="btn btn-sm btn-primary mx-2"
+            @click="$refs.orderModal.start(loan.Loans.order_id)"
+          >
+            Nasiya buyurtmasi
+          </button>
           <button class="btn btn-sm btn-primary" @click="$router.go(-1)">
             ⇽
           </button>
@@ -133,6 +139,7 @@ export default {
     @end="this.getHistory"
     ref="loanPaymentModal"
   />
+  <OrderModal ref="orderModal" />
 </template>
 
 <style scoped lang="scss">
