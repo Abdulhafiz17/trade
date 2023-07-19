@@ -122,6 +122,26 @@ button:active {
   }
 }
 
+table {
+  thead {
+    text-align: center;
+    th {
+      border: thin solid lightgray;
+    }
+  }
+  tbody {
+    td {
+      border: thin solid lightgray;
+      vertical-align: middle;
+    }
+  }
+  tfoot {
+    td {
+      border: none;
+    }
+  }
+}
+
 .list-group {
   .list-group-item {
     display: flex;

@@ -3,7 +3,7 @@ import api from "../../server/api";
 export default {
   name: "Order",
   props: {
-    id: Number,
+    orderId: Number,
   },
   data() {
     return {
@@ -14,16 +14,18 @@ export default {
     current_user() {
       return this.$store.getters.user;
     },
+    id() {
+      return this.$props.orderId;
+    },
   },
   created() {
     this.getOrder();
-    this.getBalance();
   },
   methods: {
     getOrder() {
       const param = {
         branch_id: 0,
-        order_id: this.$props.id,
+        order_id: this.id,
         seller_id: 0,
         user_id: 0,
         customer_id: 0,
@@ -35,17 +37,29 @@ export default {
       };
       api.get_orders(param).then((res) => {
         this.order = res.data;
+        this.getBalance();
+        this.getIncomes();
       });
     },
     getBalance() {
-      api
-        .get_trades({
-          order_id: this.$props.id,
-          branch_id: this.current_user.branch_id,
-        })
-        .then((res) => {
-          this.order.balance = res.data.order_balance;
-        });
+      const param = {
+        order_id: this.id,
+        branch_id: this.current_user.branch_id,
+      };
+      api.get_trades(param).then((res) => {
+        this.order.balance = res.data.order_balance;
+      });
+    },
+    getIncomes() {
+      const param = {
+        source: this.id,
+        status: "order",
+        page: 0,
+        limit: 25,
+      };
+      api.get_incomes(param).then((res) => {
+        this.order.incomes = res.data.data;
+      });
     },
   },
 };
@@ -61,6 +75,18 @@ export default {
       <div class="col-md">
         <p>Chegirma balansi:</p>
         <strong>{{ $util.currency(order?.Orders?.discount) }} so'm</strong>
+      </div>
+      <div class="col-md" v-if="order?.incomes?.length">
+        <p>To'lovlar:</p>
+        <strong
+          v-for="item in order?.incomes"
+          :key="item"
+          v-show="item.Incomes.money"
+        >
+          {{ $util.currency(item.Incomes.money) + " " + item.Incomes.type }}
+          so'm
+          <br />
+        </strong>
       </div>
       <div class="col-md" v-if="order?.Customers">
         <p>Mijoz</p>

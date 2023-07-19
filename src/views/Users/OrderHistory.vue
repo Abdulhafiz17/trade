@@ -1,12 +1,14 @@
 <script>
 import api from "../../server/api";
 import Order from "../../components/Order/Order.vue";
+import Trades from "../../components/Order/Trades.vue";
 import Pagination from "../../components/Pagination/Pagination.vue";
 export default {
   name: "OrderHistory",
-  components: { Pagination, Order },
+  components: { Pagination, Order, Trades },
   data() {
     return {
+      user_id: this.$route.query.user_id,
       filter: {
         from_time: "",
         to_time: "",
@@ -32,7 +34,7 @@ export default {
       const param = {
         branch_id: this.current_user.branch_id,
         order_id: 0,
-        seller_id: 0,
+        seller_id: this.user_id,
         user_id: 0,
         customer_id: 0,
         status: "true",
@@ -70,14 +72,15 @@ export default {
       <div class="row gap-1 table-responsive" style="max-height: 62vh">
         <div class="col-12 item" v-for="item in orders.data" :key="item">
           <div class="flex cursor" :toggle-collapse="'order' + item.Orders.id">
-            <span>{{ "Buyurtma id: " + item.Orders.id }}</span>
+            <span>{{ "Buyurtma raqami: " + item.Orders.ordinal_number }}</span>
             <span>{{
               item.Orders.time.replace("T", " ").substring(0, 16)
             }}</span>
           </div>
           <Collapse :id="'order' + item.Orders.id" v-model:open="item.open">
             <div class="order">
-              <Order :id="item.Orders.id" />
+              <Order :order-id="item.Orders.id" />
+              <Trades :order-id="item.Orders.id" />
             </div>
           </Collapse>
         </div>

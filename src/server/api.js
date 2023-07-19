@@ -153,6 +153,12 @@ export default {
       `get_loans/${p.status}?branch_id=${p.branch_id}&customer_id=${p.customer_id}&order_id=${p.order_id}&page=${p.page}&limit=${p.limit}`
     );
   },
+  // income
+  get_incomes(p = query) {
+    return server(
+      `get_incomes/${p.source}/${p.status}?page=${p.page}&limit=${p.limit}`
+    );
+  },
   // fixed expense
   get_fixed_expenses() {
     return server(`get_fixed_expenses`);

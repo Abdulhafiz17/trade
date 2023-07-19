@@ -6,6 +6,7 @@ export default {
   components: { Pagination },
   data() {
     return {
+      user_id: this.$route.query.user_id,
       filter: {
         from_time: "",
         to_time: "",
@@ -29,7 +30,7 @@ export default {
   methods: {
     getHistory() {
       const param = {
-        user_id: this.current_user.id,
+        user_id: this.user_id,
         from_time: this.filter.from_time,
         to_time: this.filter.to_time,
         page: this.history.current_page,
