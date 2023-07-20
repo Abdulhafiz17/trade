@@ -9,7 +9,7 @@ export default {
 
 <template>
   <Loading />
-  <NavMenu />
+  <NavMenu v-if="$route.name !== 'sign-in'" />
   <RouterView v-slot="{ Component, route }">
     <Transition name="v-route" mode="out-in">
       <div :key="route">
