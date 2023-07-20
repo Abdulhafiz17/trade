@@ -14,8 +14,14 @@ export default {
       return this.$store.getters.user;
     },
     routers() {
-      const role = this.current_user?.role;
+      const role = this.current_user.role;
       return [
+        {
+          icon: "Shop.svg",
+          name: "Filiallar",
+          path: "/branches",
+          role: ["admin"],
+        },
         {
           icon: "pie_chart.svg",
           name: "Hisobotlar",
@@ -44,25 +50,25 @@ export default {
           icon: "Wallet_alt.svg",
           name: "Nasiyalar",
           path: "/loans",
-          role: [role],
+          role: ["branch_admin"],
         },
         {
           icon: "Refund_back.svg",
           name: "Mahsulot qaytarish",
           path: "/",
-          role: [role],
+          role: ["branch_admin"],
         },
         {
           icon: "Shop.svg",
           name: "Mahsulotlar",
           path: "/products",
-          role: [role],
+          role: ["branch_admin"],
         },
         {
           icon: "Widget_add.svg",
           name: "Mahsulotlar qoldig'i",
           path: "/",
-          role: [role],
+          role: ["branch_admin"],
         },
         {
           icon: "Paper.svg",

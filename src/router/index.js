@@ -18,6 +18,11 @@ export default createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: "/:catchAll(.*)",
+      name: "not-found",
+      component: () => import("../views/NotFound/NotFound.vue"),
+    },
+    {
       path: "/sign-in",
       name: "sign-in",
       component: () => import("../views/SignIn/SignIn.vue"),
@@ -33,6 +38,12 @@ export default createRouter({
       name: "Hisobotlar",
       beforeEnter: auth,
       component: () => import("../views/Statistic/Statistic.vue"),
+    },
+    {
+      path: "/branches",
+      name: "Filiallar",
+      beforeEnter: auth,
+      component: () => import("../views/Branch/Branches.vue"),
     },
     {
       path: "/order",

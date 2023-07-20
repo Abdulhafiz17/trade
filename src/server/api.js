@@ -6,6 +6,22 @@ export default {
   token(data) {
     return server(`token`, "post", util.formData(data));
   },
+  // branch
+  get_branches(p = query) {
+    return server(`get_branches?status=${p.status}&admin_id=${p.admin_id}`);
+  },
+  get_branch(p = query) {
+    return server(`get_branch/${p.branch_id}`);
+  },
+  create_branch(data) {
+    return server(`create_branch`, "post", data);
+  },
+  update_branch(data) {
+    return server(`update_branch/${data.id}`, "put", data);
+  },
+  update_branch_status(data) {
+    return server(`update_branch_status`, "put", data);
+  },
   // currency
   get_currencies() {
     return server(`get_currencies`);
