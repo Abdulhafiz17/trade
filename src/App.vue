@@ -12,9 +12,9 @@ export default {
   <NavMenu v-if="$route.name !== 'sign-in'" />
   <RouterView v-slot="{ Component, route }">
     <Transition name="v-route" mode="out-in">
-      <div :key="route">
+      <main :key="route">
         <component :is="Component" />
-      </div>
+      </main>
     </Transition>
   </RouterView>
 </template>
@@ -28,5 +28,10 @@ export default {
 .v-route-enter-active,
 .v-route-leave-active {
   transition: opacity 0.25s;
+}
+
+main {
+  width: 100%;
+  height: 100%;
 }
 </style>
