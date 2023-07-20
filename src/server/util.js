@@ -2,6 +2,7 @@ import Swal from "sweetalert2";
 
 export default {
   payment_types: ["naqd", "plastik", "click"],
+  units: ["dona", "kg", "litr", "metr"],
   currency(number = Number()) {
     return Intl.NumberFormat().format(Number(number).toFixed(2));
   },

@@ -114,6 +114,9 @@ export default {
   get_faulty_products() {
     return server(`get_faulty_products`);
   },
+  get_product(p = query) {
+    return server(`get_product/${p.code}`);
+  },
   get_products(p = query) {
     const search = p.search ? `search=${p.search}` : ``;
     const status = p.status ? `status=${p.status}` : ``;
@@ -135,6 +138,16 @@ export default {
   },
   update_product(data) {
     return server(`update_product`, "put", data);
+  },
+  update_opened_product(data) {
+    return server(`update_opened_product`, "put", data);
+  },
+  // product composition
+  create_product_composition(data) {
+    return server(`create_product_composition`, "post", data);
+  },
+  update_product_composition(data) {
+    return server(`update_product_composition`, "put", data);
   },
   // unit
   get_olchov_birliglar(p = query) {

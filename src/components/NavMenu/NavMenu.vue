@@ -55,7 +55,7 @@ export default {
         {
           icon: "Shop.svg",
           name: "Mahsulotlar",
-          path: "/",
+          path: "/products",
           role: [role],
         },
         {
@@ -124,6 +124,7 @@ export default {
   background: var(--bs-blue);
   border: none;
   border-radius: 0px 0px 100px 100px;
+  z-index: 1;
 }
 
 .v-nav-menu {
