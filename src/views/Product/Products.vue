@@ -6,7 +6,14 @@ export default {
   data() {
     return {
       search: "",
+      status: ["quantity_false", "quantity_true", "price_false", "price_true"],
     };
+  },
+  methods: {
+    onSearch() {
+      this.$refs.productsTable.search = this.search;
+      this.$refs.productsTable.getProducts();
+    },
   },
 };
 </script>
@@ -29,7 +36,7 @@ export default {
               />
             </div>
             <div class="col-2">
-              <button class="btn btn-primary">
+              <button class="btn btn-primary" @click="onSearch()">
                 <img src="../../assets/icons/Search_alt.svg" alt="Search_alt" />
               </button>
             </div>
@@ -38,9 +45,21 @@ export default {
       </div>
     </div>
     <div class="col-12">
-      <Tab :tabs="[`Narxlangan`]">
+      <Tab :tabs="[`Narx belgilangan`, `Narx belgilanmagan`, `Qoldiq tugagan`]">
         <template #1>
-          <ProductsTable edit barcode info />
+          <ProductsTable
+            status="price_true"
+            edit
+            barcode
+            info
+            ref="productsTable"
+          />
+        </template>
+        <template #2>
+          <ProductsTable status="price_false" edit ref="productsTable" />
+        </template>
+        <template #3>
+          <ProductsTable status="quantity_false" ref="productsTable" />
         </template>
       </Tab>
     </div>
