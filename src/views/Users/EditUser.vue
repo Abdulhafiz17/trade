@@ -34,7 +34,7 @@ export default {
           </label>
           <label class="col-md-6">
             Tel
-            <div class="input-group">
+            <div class="input-group" :tel="$util.tel(user.phone)">
               <div class="input-group-text">+998</div>
               <input
                 type="tel"
