@@ -14,7 +14,7 @@ export default {
       return this.$store.getters.user;
     },
     routers() {
-      const role = this.current_user.role;
+      const role = this.current_user?.role;
       return [
         {
           icon: "Shop.svg",
