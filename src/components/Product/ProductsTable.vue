@@ -25,6 +25,9 @@ export default {
     current_user() {
       return this.$store.getters.user;
     },
+    branch_id() {
+      return this.$route.query.branch_id || this.current_user.branch_id;
+    },
     options() {
       return this.$props.edit || this.$props.barcode;
     },
@@ -37,7 +40,7 @@ export default {
       const param = {
         search: this.search,
         status: this.$props.status,
-        branch_id: this.current_user.branch_id,
+        branch_id: this.branch_id,
         page: this.products.current_page,
         limit: this.products.limit,
       };
