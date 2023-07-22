@@ -27,6 +27,11 @@ export default {
     current_user() {
       return this.$store.getters.user;
     },
+    tabs() {
+      let tabs = [`Profil`, `Valyutalar`, `Kategoriyalar`, `Mahsulot turlari`];
+      if (this.current_user.role == "admin") tabs.length = 1;
+      return tabs;
+    },
   },
   created() {
     this.getUser();
@@ -66,9 +71,7 @@ export default {
       </div>
     </div>
     <div class="col-12">
-      <Tab
-        :tabs="[`Profil`, `Valyutalar`, `Kategoriyalar`, `Mahsulot turlari`]"
-      >
+      <Tab :tabs="tabs">
         <template #1>
           <EditUser :user="user" />
         </template>
