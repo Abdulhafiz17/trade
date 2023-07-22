@@ -1,7 +1,9 @@
 <script>
 import api from "../../server/api";
+import OrderModal from "../../components/Modal/OrderModal.vue";
 export default {
   name: "Statistic",
+  components: { OrderModal },
   data() {
     return {
       filter: {
@@ -21,6 +23,7 @@ export default {
         data: [],
         data_sum: [],
       },
+      day: null,
     };
   },
   computed: {
@@ -241,12 +244,57 @@ export default {
                   </strong>
                 </li>
               </ul>
+              <div class="row mt-2">
+                <div class="col">
+                  <button
+                    class="btn btn-info"
+                    @click="
+                      day = item;
+                      $refs.dayModal.openModal();
+                    "
+                  >
+                    <img src="../../assets/icons/Info.svg" alt="Info" />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <Modal size="lg" ref="dayModal">
+    <template #header>
+      <strong>
+        {{ day.day }}
+      </strong>
+    </template>
+    <template #body>
+      <pre>{{ day }}</pre>
+      <Tab :tabs="[`Buyurtmalar`]">
+        <template #1>
+          <div class="row gap-1 table-responsive" style="max-height: 60vh">
+            <div class="col-12 item" v-for="item in day?.orders" :key="item">
+              <div
+                class="flex cursor"
+                @click="$refs.orderModal.start(item.Orders.id)"
+              >
+                <span>{{
+                  "Buyurtma raqami: " + item.Orders.ordinal_number
+                }}</span>
+                <span>{{
+                  item.Orders.time.replace("T", " ").substring(0, 16)
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </Tab>
+    </template>
+  </Modal>
+
+  <OrderModal ref="orderModal" />
 
   <Modal ref="sumStatisticsModal">
     <template #header>
@@ -382,5 +430,11 @@ export default {
 <style scoped>
 h5 {
   font-weight: 900;
+}
+.flex {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

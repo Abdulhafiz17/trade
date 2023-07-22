@@ -106,6 +106,12 @@ export default createRouter({
       component: () => import("../views/Product/Product.vue"),
     },
     {
+      path: "/return",
+      name: "Mahsulot qaytarish",
+      beforeEnter: auth,
+      component: () => import("../views/Return/Return.vue"),
+    },
+    {
       path: "/setting",
       name: "Sozlamalar",
       beforeEnter: auth,

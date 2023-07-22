@@ -19,7 +19,7 @@ export default {
     },
   },
   created() {
-    this.getTrades();
+    if (this.$props.orderId) this.getTrades();
   },
   methods: {
     getTrades() {
@@ -38,7 +38,7 @@ export default {
 <template>
   <div class="trades">
     <div class="table-responsive">
-      <table class="table table-sm table-hover">
+      <table class="table table-sm table-hover" v-if="trades.length">
         <thead>
           <tr>
             <th>№</th>

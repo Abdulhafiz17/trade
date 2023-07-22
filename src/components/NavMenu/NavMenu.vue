@@ -55,7 +55,7 @@ export default {
         {
           icon: "Refund_back.svg",
           name: "Mahsulot qaytarish",
-          path: "/",
+          path: "/return",
           role: ["branch_admin"],
         },
         {

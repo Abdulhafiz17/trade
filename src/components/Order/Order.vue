@@ -19,7 +19,7 @@ export default {
     },
   },
   created() {
-    this.getOrder();
+    if (this.$props.orderId) this.getOrder();
   },
   methods: {
     getOrder() {
@@ -68,17 +68,17 @@ export default {
 <template>
   <div class="order">
     <div class="row">
-      <div class="col-md">
+      <div class="col-md" v-if="order">
         <p>Sana</p>
         <span>{{
           order?.Orders?.time.replace("T", " ").substring(0, 16)
         }}</span>
       </div>
-      <div class="col-md">
+      <div class="col-md" v-if="order">
         <p>Umumiy balans</p>
         <strong>{{ $util.currency(order?.balance) }} so'm</strong>
       </div>
-      <div class="col-md">
+      <div class="col-md" v-if="order">
         <p>Chegirma</p>
         <strong>{{ $util.currency(order?.Orders?.discount) }} so'm</strong>
       </div>
