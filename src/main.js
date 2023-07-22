@@ -9,12 +9,14 @@ import "./style.scss";
 import router from "./router/index";
 import store from "./store/index";
 import util from "./server/util";
+import baseurl from "./server/baseurl";
 // Bootstrap
 import "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js";
 
 const app = createApp(App);
 
 app.config.globalProperties.$util = util;
+app.config.globalProperties.$baseurl = baseurl;
 
 app
   .component("Tab", Tab)

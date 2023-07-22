@@ -14,10 +14,10 @@ export default {
     return server(`get_branch/${p.branch_id}`);
   },
   create_branch(data) {
-    return server(`create_branch`, "post", data);
+    return server(`create_branch`, "post", util.formData(data));
   },
   update_branch(data) {
-    return server(`update_branch/${data.id}`, "put", data);
+    return server(`update_branch/${data.id}`, "put", util.formData(data));
   },
   update_branch_status(data) {
     return server(`update_branch_status`, "put", data);
