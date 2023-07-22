@@ -29,7 +29,8 @@ export default {
     },
     tabs() {
       let tabs = [`Profil`, `Valyutalar`, `Kategoriyalar`, `Mahsulot turlari`];
-      if (this.current_user.role == "admin") tabs.length = 1;
+      if (["crud_admin", "admin"].includes(this.current_user.role))
+        tabs.length = 1;
       return tabs;
     },
   },

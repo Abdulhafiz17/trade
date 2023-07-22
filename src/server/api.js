@@ -55,12 +55,16 @@ export default {
   },
   // user
   get_users(p = query) {
+    const search = p.search ? `search=${p.search}` : ``;
     return server(
-      `get_users?branch_id=${p.branch_id}&page=${p.page}&limit=${p.limit}`
+      `get_users?branch_id=${p.branch_id}&${search}&page=${p.page}&limit=${p.limit}`
     );
   },
   this_user(p = query) {
     return server(`this_user?user_id=${p.user_id}`);
+  },
+  create_user(data) {
+    return server(`create_user`, "post", data);
   },
   update_user(data) {
     return server(`update_user`, "put", data);

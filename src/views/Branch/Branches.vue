@@ -16,7 +16,8 @@ export default {
       return this.$store.getters.user;
     },
     admin_id() {
-      return this.$route.query.admin_id || this.current_user.id;
+      if (this.current_user.role == "admin") return this.current_user.id;
+      else return this.$route.query.admin_id || 0;
     },
   },
   created() {
@@ -49,6 +50,7 @@ export default {
               <button
                 class="btn btn-success w-100"
                 @click="$refs.branchModal.start()"
+                v-if="current_user.role !== 'crud_admin'"
               >
                 <span>Filial qo'shish</span>
               </button>
@@ -110,6 +112,41 @@ export default {
                     <p>
                       <i class="fa fa-calendar-alt"></i>
                       {{ item.Branches.active_date }}
+                      <strong
+                        class="fw-bold"
+                        :class="{
+                          'text-success':
+                            $util.countDays(
+                              new Date(),
+                              item.Branches.active_date
+                            ) > 10,
+                          'text-warning':
+                            $util.countDays(
+                              new Date(),
+                              item.Branches.active_date
+                            ) <= 10 &&
+                            $util.countDays(
+                              new Date(),
+                              item.Branches.active_date
+                            ) > 5,
+                          'text-danger':
+                            $util.countDays(
+                              new Date(),
+                              item.Branches.active_date
+                            ) <= 5,
+                        }"
+                        v-if="
+                          $util.countDays(
+                            new Date(),
+                            item.Branches.active_date
+                          ) > 0
+                        "
+                      >
+                        {{
+                          $util.countDays(new Date(), item.Branches.active_date)
+                        }}
+                        kun
+                      </strong>
                     </p>
                     <p v-if="current_user.role == 'crud_admin'">
                       <i class="fa fa-user"></i>
@@ -119,7 +156,10 @@ export default {
                 </div>
                 <div class="col-12">
                   <div class="row">
-                    <div class="col mb-1">
+                    <div
+                      class="col mb-1"
+                      v-if="current_user.role !== 'crud_admin'"
+                    >
                       <RouterLink
                         class="btn btn-sm btn-success w-100"
                         :to="{
@@ -130,7 +170,10 @@ export default {
                         <img src="../../assets/icons/Pipe.svg" alt="Pipe" />
                       </RouterLink>
                     </div>
-                    <div class="col mb-1">
+                    <div
+                      class="col mb-1"
+                      v-if="current_user.role !== 'crud_admin'"
+                    >
                       <RouterLink
                         class="btn btn-sm btn-primary w-100"
                         :to="{
@@ -144,7 +187,10 @@ export default {
                         />
                       </RouterLink>
                     </div>
-                    <div class="col mb-1">
+                    <div
+                      class="col mb-1"
+                      v-if="current_user.role !== 'crud_admin'"
+                    >
                       <RouterLink
                         class="btn btn-sm btn-info w-100"
                         :to="{

@@ -20,7 +20,7 @@ export default {
           icon: "Shop.svg",
           name: "Filiallar",
           path: "/branches",
-          role: ["admin"],
+          role: ["crud_admin", "admin"],
         },
         {
           icon: "pie_chart.svg",
@@ -36,9 +36,9 @@ export default {
         },
         {
           icon: "Group.svg",
-          name: "Hodimlar",
+          name: role == "crud_admin" ? "Adminlar" : "Hodimlar",
           path: "/users",
-          role: ["branch_admin"],
+          role: ["crud_admin", "branch_admin"],
         },
         {
           icon: "User_box.svg",

@@ -7,6 +7,7 @@ export default {
   components: { Pagination, AddUser },
   data() {
     return {
+      search: "",
       users: {
         current_page: 0,
         pages: 1,
@@ -22,6 +23,9 @@ export default {
     branch_id() {
       return this.$route.query.branch_id || this.current_user.branch_id;
     },
+    title() {
+      return this.current_user.role == "crud_admin" ? "Admin" : "Hodim";
+    },
   },
   created() {
     this.get();
@@ -30,6 +34,7 @@ export default {
     get() {
       const param = {
         branch_id: this.branch_id,
+        search: this.search,
         page: this.users.current_page,
         limit: this.users.limit,
       };
@@ -81,19 +86,19 @@ export default {
 </script>
 
 <template>
-  <AddUser ref="addUser" />
-
   <div class="row gap-3">
     <div class="col-12">
       <div class="row">
         <div class="col-md-6">
-          <h2 class="title">HODIMLAR</h2>
+          <h2 class="title">{{ title.toUpperCase() }}LAR</h2>
         </div>
         <div class="col-md-6">
           <div class="row">
             <div class="col-md-7 text-end">
-              <div class="btn-group" @click="$refs.addUser.open()">
-                + Hodim qo'shish
+              <div class="btn-group h-100" @click="$refs.addUser.open()">
+                <div class="d-flex align-items-center">
+                  + {{ title }} qo'shish
+                </div>
                 <button class="btn btn-sm btn-success mx-1">
                   <img
                     src="../../assets/icons/Add_ring-white.svg"
@@ -109,10 +114,11 @@ export default {
                     type="search"
                     class="form-control"
                     placeholder="Qidiruv:"
+                    v-model="search"
                   />
                 </div>
                 <div class="col-4">
-                  <button class="btn btn-sm btn-primary">
+                  <button class="btn btn-sm btn-primary" @click="get()">
                     <img src="../../assets/icons/Search_alt.svg" alt="" />
                   </button>
                 </div>
@@ -144,7 +150,7 @@ export default {
                   <span>{{ item.balance }}</span>
                 </li>
               </ul>
-              <ul class="list-group">
+              <ul class="list-group" v-if="current_user.role !== 'crud_admin'">
                 <li class="list-group-item" :toggle-collapse="'pay-' + item.id">
                   <span>Pul berish</span>
                 </li>
@@ -211,7 +217,7 @@ export default {
                 </Collapse>
               </ul>
               <div class="row mt-3">
-                <div class="col">
+                <div class="col" v-if="current_user.role !== 'crud_admin'">
                   <RouterLink
                     class="btn btn-sm w-100 btn-primary"
                     :to="{
@@ -222,7 +228,7 @@ export default {
                     <img src="../../assets/icons/Info.svg" alt="Info" />
                   </RouterLink>
                 </div>
-                <div class="col">
+                <div class="col" v-if="current_user.role !== 'crud_admin'">
                   <RouterLink
                     class="btn btn-sm w-100 btn-warning"
                     :to="{
@@ -243,6 +249,8 @@ export default {
       </div>
     </div>
   </div>
+
+  <AddUser @end="get()" ref="addUser" />
 </template>
 
 <style scoped></style>

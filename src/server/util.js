@@ -21,6 +21,13 @@ export default {
   captalize(text = String()) {
     return text.charAt(0).toUpperCase() + text.slice(1);
   },
+  countDays(start, end) {
+    let start_date = start ? new Date(start) : new Date(),
+      end_date = new Date(end),
+      difference = end_date.getTime() - start_date.getTime(),
+      days = Math.ceil(difference / (1000 * 3600 * 24));
+    return days;
+  },
   toast(icon = "success", title = "Amaliyot bajarildi !") {
     const Toast = Swal.mixin({
       toast: true,

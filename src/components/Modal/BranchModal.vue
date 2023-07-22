@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     start(id) {
-      this.content = "admin";
+      this.content = this.current_user.role;
       this.branch_id = id;
       if (this.branch_id) {
         this.getBranch();
@@ -102,10 +102,8 @@ export default {
     </template>
     <template #body>
       <form class="row gap-2" id="branch-form" @submit.prevent="sendData()">
-        <div
-          class="col-12"
-          v-if="branch_id && current_user.role == 'crud_admin'"
-        >
+        <!-- branch_id && current_user.role == 'crud_admin' -->
+        <div class="col-12" v-if="false">
           <div class="row">
             <div class="col-6">
               <button
