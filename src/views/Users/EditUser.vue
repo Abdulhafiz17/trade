@@ -39,6 +39,8 @@ export default {
               <input
                 type="tel"
                 class="form-control"
+                minlength="9"
+                maxlength="9"
                 placeholder="Tel:"
                 required
                 v-model="user.phone"
