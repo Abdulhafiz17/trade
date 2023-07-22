@@ -72,7 +72,7 @@ export default {
                 />
               </div>
               <input
-                type="text"
+                type="password"
                 class="form-control"
                 placeholder="PAROL"
                 autofocus
