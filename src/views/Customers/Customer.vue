@@ -1,9 +1,10 @@
 <script>
 import api from "../../server/api";
-import EditUser from "./EditCustomer.vue";
+import EditCustomer from "./EditCustomer.vue";
+import OrderHistory from "../../components/Order/OrderHistory.vue";
 export default {
   name: "Customer",
-  components: { EditUser },
+  components: { EditCustomer, OrderHistory },
   data() {
     return {
       customer_id: this.$route.query.customer_id,
@@ -49,7 +50,8 @@ export default {
       </div>
     </div>
     <div class="col-12">
-      <EditUser :customer="customer" v-if="content == 'edit'" />
+      <EditCustomer :customer="customer" v-if="content == 'edit'" />
+      <OrderHistory from="customer" v-if="content == 'history'" />
     </div>
   </div>
 </template>

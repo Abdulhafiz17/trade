@@ -6,9 +6,13 @@ import Pagination from "../../components/Pagination/Pagination.vue";
 export default {
   name: "OrderHistory",
   components: { Pagination, Order, Trades },
+  props: {
+    from: String,
+  },
   data() {
     return {
       user_id: this.$route.query.user_id,
+      customer_id: this.$route.query.customer_id,
       filter: {
         from_time: "",
         to_time: "",
@@ -31,10 +35,10 @@ export default {
   },
   methods: {
     getOrders() {
-      const param = {
+      let param = {
         branch_id: this.current_user.branch_id,
         order_id: 0,
-        seller_id: this.user_id,
+        seller_id: 0,
         user_id: 0,
         customer_id: 0,
         status: "true",
@@ -43,6 +47,9 @@ export default {
         page: this.orders.current_page,
         limit: this.orders.limit,
       };
+      if (this.$props.from == "user") param.seller_id = this.user_id;
+      else if (this.$props.from == "customer")
+        param.customer_id = this.customer_id;
       api.get_orders(param).then((res) => {
         this.orders = res.data;
       });

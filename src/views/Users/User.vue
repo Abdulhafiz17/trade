@@ -2,7 +2,7 @@
 import api from "../../server/api";
 import EditUser from "./EditUser.vue";
 import PaymentHistory from "./PaymentHistory.vue";
-import OrderHistory from "./OrderHistory.vue";
+import OrderHistory from "../../components/Order/OrderHistory.vue";
 export default {
   name: "User",
   components: { EditUser, PaymentHistory, OrderHistory },
@@ -61,10 +61,10 @@ export default {
     <div class="col-12" v-if="content == 'history'">
       <Tab :tabs="[`To'lovlar`, `Buyurtmalar`]">
         <template #1>
-          <PaymentHistory :user="user" />
+          <PaymentHistory />
         </template>
         <template #2>
-          <OrderHistory :user="user" />
+          <OrderHistory from="user" />
         </template>
       </Tab>
     </div>

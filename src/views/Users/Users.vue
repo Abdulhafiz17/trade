@@ -217,7 +217,10 @@ export default {
                 </Collapse>
               </ul>
               <div class="row mt-3">
-                <div class="col" v-if="current_user.role !== 'crud_admin'">
+                <div
+                  class="col"
+                  v-if="!['crud_admin', 'admin'].includes(current_user.role)"
+                >
                   <RouterLink
                     class="btn btn-sm w-100 btn-primary"
                     :to="{
