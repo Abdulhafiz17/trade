@@ -4,6 +4,9 @@ import Trade from "../Order/Trades.vue";
 export default {
   name: "OrderModal",
   components: { Order, Trade },
+  props: {
+    returnable: Boolean,
+  },
   data() {
     return {
       order_id: 0,
@@ -28,7 +31,7 @@ export default {
   <Modal size="lg" ref="orderModal">
     <template #body>
       <Order :order-id="order_id" />
-      <Trade :order-id="order_id" />
+      <Trade :returnable="returnable" :order-id="order_id" />
     </template>
     <template #footer>
       <button class="btn btn-outline-info" @click="routerToReturn()">
