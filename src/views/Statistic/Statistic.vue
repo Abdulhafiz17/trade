@@ -286,7 +286,7 @@ export default {
     </template>
   </Modal>
 
-  <OrderModal ref="orderModal" />
+  <OrderModal returnable ref="orderModal" />
 
   <Modal ref="sumStatisticsModal">
     <template #header>
