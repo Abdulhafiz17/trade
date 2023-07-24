@@ -14,6 +14,12 @@ export default {
       this.order_id = order_id;
       this.$refs.orderModal.openModal();
     },
+    routerToReturn() {
+      this.$router.push({
+        path: "/return",
+        query: { order_id: this.order_id },
+      });
+    },
   },
 };
 </script>
@@ -23,6 +29,11 @@ export default {
     <template #body>
       <Order :order-id="order_id" />
       <Trade :order-id="order_id" />
+    </template>
+    <template #footer>
+      <button class="btn btn-outline-info" @click="routerToReturn()">
+        <i class="fa fa-undo"></i>
+      </button>
     </template>
   </Modal>
 </template>
