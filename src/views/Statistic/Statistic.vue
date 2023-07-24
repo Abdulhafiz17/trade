@@ -247,7 +247,7 @@ export default {
               <div class="row mt-2">
                 <div class="col">
                   <button
-                    class="btn btn-info"
+                    class="btn btn-info float-end"
                     @click="
                       day = item;
                       $refs.dayModal.openModal();
@@ -271,21 +271,13 @@ export default {
       </strong>
     </template>
     <template #body>
-      <pre>{{ day }}</pre>
       <Tab :tabs="[`Buyurtmalar`]">
         <template #1>
           <div class="row gap-1 table-responsive" style="max-height: 60vh">
             <div class="col-12 item" v-for="item in day?.orders" :key="item">
-              <div
-                class="flex cursor"
-                @click="$refs.orderModal.start(item.Orders.id)"
-              >
-                <span>{{
-                  "Buyurtma raqami: " + item.Orders.ordinal_number
-                }}</span>
-                <span>{{
-                  item.Orders.time.replace("T", " ").substring(0, 16)
-                }}</span>
+              <div class="flex cursor" @click="$refs.orderModal.start(item.id)">
+                <span>{{ "Buyurtma raqami: " + item.ordinal_number }}</span>
+                <span>{{ item.time.replace("T", " ").substring(0, 16) }}</span>
               </div>
             </div>
           </div>
@@ -436,5 +428,7 @@ h5 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border: thin solid whitesmoke;
+  border-radius: 10px;
 }
 </style>
