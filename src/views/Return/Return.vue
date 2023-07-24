@@ -8,12 +8,42 @@ export default {
   data() {
     return {
       order_id: null,
+      product: null,
+      return_product: {
+        trade_id: null,
+        quantity: null,
+        price: null,
+      },
     };
+  },
+  created() {
+    this.order_id = Number(this.$route.query.order_id) || null;
+  },
+  mounted() {
+    if (this.order_id) this.get();
   },
   methods: {
     get() {
       this.$refs.order.getOrder();
       this.$refs.trades.getTrades();
+    },
+    setProduct(product) {
+      this.product = product;
+      this.$refs.returnModal.openModal();
+    },
+    returnProduct() {
+      this.return_product.trade_id = this.product.Trades.id;
+      api.return_product(this.return_product).then(() => {
+        this.return_product = {
+          trade_id: null,
+          quantity: null,
+          price: null,
+        };
+        this.$util.toast().then(() => {
+          this.$refs.returnModal.closeModal();
+          this.$router.replace({ path: "/return" });
+        });
+      });
     },
   },
 };
@@ -54,11 +84,81 @@ export default {
             </div>
             <div class="col-12">
               <Order :order-id="order_id" ref="order" />
-              <Trades :order-id="order_id" ref="trades" />
+              <Trades
+                returnable
+                :order-id="order_id"
+                @open-modal="setProduct($event)"
+                ref="trades"
+              />
             </div>
           </div>
         </template>
       </Tab>
     </div>
   </div>
+
+  <Modal ref="returnModal">
+    <template #header>
+      <h5>Mahsulot qaytarish</h5>
+      <p>
+        {{
+          product?.Trades?.product?.category.name +
+          " - " +
+          product?.Trades?.product?.product_type.name +
+          " - " +
+          product?.Trades?.product?.product_type.name2
+        }}
+      </p>
+      <strong>{{ $util.currency(product?.Trades?.price) }} so'm</strong>
+    </template>
+    <template #body>
+      <form
+        class="row gap-2"
+        id="return-product-form"
+        @submit.prevent="returnProduct()"
+      >
+        <label class="col-12">
+          Summa
+          <div
+            class="input-group"
+            :currency="$util.currency(return_product.price)"
+          >
+            <input
+              type="number"
+              class="form-control"
+              min="0"
+              step="any"
+              required
+              v-model="return_product.price"
+            />
+            <div class="input-group-text">so'm</div>
+          </div>
+        </label>
+        <label class="col-12">
+          Hajm
+          <div class="input-group">
+            <input
+              type="number"
+              class="form-control"
+              min="0"
+              step="any"
+              required
+              v-model="return_product.quantity"
+            />
+            <div class="input-group-text">
+              {{ product?.Trades?.product?.olchov_birligi }}
+            </div>
+          </div>
+        </label>
+      </form>
+    </template>
+    <template #footer>
+      <button class="btn btn-success" form="return-product-form">
+        <img
+          src="../../assets/icons/Done_round-white.svg"
+          alt="Done_round-white"
+        />
+      </button>
+    </template>
+  </Modal>
 </template>
