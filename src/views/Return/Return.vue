@@ -2,9 +2,10 @@
 import api from "../../server/api";
 import Order from "../../components/Order/Order.vue";
 import Trades from "../../components/Order/Trades.vue";
+import ReturnedProducts from "./ReturnedProducts.vue";
 export default {
   name: "Return",
-  components: { Order, Trades },
+  components: { Order, Trades, ReturnedProducts },
   data() {
     return {
       order_id: null,
@@ -92,6 +93,9 @@ export default {
               />
             </div>
           </div>
+        </template>
+        <template #2>
+          <ReturnedProducts />
         </template>
       </Tab>
     </div>
