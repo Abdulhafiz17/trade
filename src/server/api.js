@@ -130,6 +130,42 @@ export default {
   remove_trade(p = query) {
     return server(`remove_trade/${p.trade_id}`, "delete");
   },
+  // market
+  get_markets(p = query) {
+    return server(`get_markets?page=${p.page}&limit=${p.limit}`);
+  },
+  get_market(p = query) {
+    return server(`get_market/${p.market_id}`);
+  },
+  create_market(data) {
+    return server(`create_market`, "post", data);
+  },
+  update_market(data) {
+    return server(`update_market/${data.id}`, "put", data);
+  },
+  // paty
+  get_parties(p = query) {
+    const status = p.status ? `status=${p.status}` : ``;
+    return server(`get_parties?${status}&page=${p.page}&limit=${p.limit}`);
+  },
+  create_party(data) {
+    return server(`create_party`, "post", data);
+  },
+  party_acceptance(data) {
+    return server(`party_acceptance`, "put", data);
+  },
+  // supply
+  get_supplies(p = query) {
+    return server(
+      `get_supplies?category_id=${p.category_id}&product_type_id=${p.product_type_id}&market_id=${p.market_id}&party_id=${p.party_id}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  take_supply(data) {
+    return server(`take_supply`, "post", data);
+  },
+  remove_supply(p = query) {
+    return server(`remove_supply/${p.supply_id}`, "delete");
+  },
   // product
   get_faulty_products() {
     return server(`get_faulty_products`);

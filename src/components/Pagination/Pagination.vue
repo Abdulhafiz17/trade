@@ -1,6 +1,8 @@
 <script>
+import DataNotFound from "../DataNotFound/DataNotFound.vue";
 export default {
   name: "Pagination",
+  components: { DataNotFound },
   props: {
     modelValue: {
       default: {
@@ -28,7 +30,7 @@ export default {
 </script>
 
 <template>
-  <div class="v-pagination">
+  <div class="v-pagination" v-if="pagination.data.length">
     <button @click="$emit('get')">&#x21bb;</button>
     <button
       :disabled="pagination.current_page == 1"
@@ -64,6 +66,9 @@ export default {
       <option :value="50">50</option>
       <option :value="100">100</option>
     </select>
+  </div>
+  <div v-else>
+    <DataNotFound />
   </div>
 </template>
 

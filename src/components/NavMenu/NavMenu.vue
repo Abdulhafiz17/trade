@@ -53,6 +53,12 @@ export default {
           role: ["branch_admin"],
         },
         {
+          icon: "Shop.svg",
+          name: "Ta'minot",
+          path: "/parties",
+          role: ["branch_admin"],
+        },
+        {
           icon: "Refund_back.svg",
           name: "Mahsulot qaytarish",
           path: "/return",

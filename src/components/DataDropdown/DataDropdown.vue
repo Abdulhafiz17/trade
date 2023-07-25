@@ -7,7 +7,9 @@ export default {
     data: Array,
     type: String,
     property: String,
+    property2: String,
     all: Boolean,
+    params: Object,
   },
   emits: ["update:modelValue", "change"],
   data() {
@@ -30,14 +32,32 @@ export default {
           return "get_users";
         case "customer":
           return "get_customers";
+        case "market":
+          return "get_markets";
         case "currency":
           return "get_currencies";
+        case "category":
+          return "get_categories";
+        case "product_type":
+          return "get_product_types";
         default:
           break;
       }
     },
+    param() {
+      const param = this.$props.params;
+      const category_id = param?.category_id || 0;
+      return {
+        branch_id: this.current_user.branch_id,
+        category_id: category_id,
+        search: this.search,
+        page: this.current_page,
+        limit: 20,
+      };
+    },
     searchable() {
-      if (this.$props.type == "customer") return true;
+      if (["customer", "product_type"].includes(this.$props.type)) return true;
+      else return false;
     },
     title() {
       const type = this.$props.type;
@@ -46,8 +66,14 @@ export default {
           return "Hodim";
         case "customer":
           return "Mijoz";
+        case "market":
+          return "Ta'minotchi";
         case "currency":
           return "Valyuta";
+        case "category":
+          return "Kategoriya";
+        case "product_type":
+          return "Mahsulot turi";
         default:
           break;
       }
@@ -55,17 +81,11 @@ export default {
   },
   created() {
     this.list = [];
-    if (!this.data) this.get(0);
+    if (!this.data) this.get();
   },
   methods: {
-    get(page) {
-      const param = {
-        branch_id: this.current_user.branch_id,
-        search: this.search,
-        page: page,
-        limit: 20,
-      };
-      api[this.request](param).then((res) => {
+    get() {
+      api[this.request](this.param).then((res) => {
         if (this.$props.type == "currency")
           this.list = this.list.concat(res.data);
         else this.list = this.list.concat(res.data.data);
@@ -77,7 +97,8 @@ export default {
       const element = event.target;
       if (element.scrollTop + element.clientHeight >= element.scrollHeight) {
         if (this.current_page < this.pages - 1) {
-          this.get(this.current_page + 1);
+          this.current_page = this.current_page + 1;
+          this.get();
         }
       }
     },
@@ -92,7 +113,12 @@ export default {
 <template>
   <dropdown :id="type + id">
     <button type="button" class="btn" toggle>
-      {{ modelValue?.[property] || title }}
+      {{
+        modelValue
+          ? modelValue?.[property] +
+            (property2 ? " - " + modelValue?.[property2] : "")
+          : title
+      }}
     </button>
     <template #menu>
       <div class="table-responsive" @scroll="scroll($event)">
@@ -103,7 +129,8 @@ export default {
           v-model="search"
           @keyup="
             list = [];
-            get(0);
+            current_page = 0;
+            get();
           "
           v-if="searchable"
         />
@@ -111,6 +138,7 @@ export default {
           <li v-if="all" @click="update(null)">Hammasi</li>
           <li v-for="item in data || list" :key="item" @click="update(item)">
             {{ item?.[property] }}
+            {{ property2 ? " - " + item?.[property2] : "" }}
           </li>
         </ul>
       </div>
