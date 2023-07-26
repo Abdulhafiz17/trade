@@ -117,7 +117,7 @@ export default {
                   class="form-control"
                   placeholder="artikul:"
                   required
-                  :disabled="current_user.role !== 'admin'"
+                  :disabled="current_user.role !== 'branch_admin'"
                   v-model="item1.name"
                 />
                 <input
@@ -125,13 +125,13 @@ export default {
                   class="form-control"
                   placeholder="marka:"
                   required
-                  :disabled="current_user.role !== 'admin'"
+                  :disabled="current_user.role !== 'branch_admin'"
                   v-model="item1.name2"
                 />
                 <div class="input-group-append">
                   <button
                     class="btn btn-sm btn-warning"
-                    v-if="current_user.role == 'admin'"
+                    v-if="current_user.role == 'branch_admin'"
                   >
                     <img src="../../assets/icons/Edit.svg" alt="" />
                   </button>

@@ -52,7 +52,7 @@ export default {
     <h5>Valyutalar</h5>
     <p>Yangi valyuta qo'shish yoki mavjud valyuta ma'lumotini tahrirlash</p>
     <div class="row gap-2 table-responsive" style="max-height: 55vh">
-      <div class="col-12" v-if="current_user.role == 'admin'">
+      <div class="col-12" v-if="current_user.role == 'branch_admin'">
         <form class="input-group" @submit.prevent="post()">
           <div class="input-group-text">1</div>
           <input
@@ -88,7 +88,7 @@ export default {
             class="form-control"
             placeholder="nomi"
             required
-            :disabled="current_user.role !== 'admin'"
+            :disabled="current_user.role !== 'branch_admin'"
             v-model="item.currency"
           />
           <div class="input-group-text">=</div>
@@ -99,12 +99,15 @@ export default {
             class="form-control"
             placeholder="narxi"
             required
-            :disabled="current_user.role !== 'admin'"
+            :disabled="current_user.role !== 'branch_admin'"
             v-model="item.price"
           />
           <div class="input-group-text">so'm</div>
           <div class="input-group-append">
-            <button class="btn btn-success" v-if="current_user.role == 'admin'">
+            <button
+              class="btn btn-success"
+              v-if="current_user.role == 'branch_admin'"
+            >
               <img src="../../assets/icons/Done_round.svg" alt="Add_ring" />
             </button>
           </div>

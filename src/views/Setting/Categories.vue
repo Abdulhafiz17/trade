@@ -62,7 +62,7 @@ export default {
       Yangi kategoriya qo'shish yoki mavjud kategoriya ma'lumotini tahrirlash
     </p>
     <div class="row gap-2 table-responsive" style="max-height: 55vh">
-      <div class="col-12" v-if="current_user.role == 'admin'">
+      <div class="col-12" v-if="current_user.role == 'branch_admin'">
         <form class="input-group input-group-sm" @submit.prevent="post()">
           <input
             type="text"
@@ -94,13 +94,13 @@ export default {
             class="form-control"
             placeholder="nomi"
             required
-            :disabled="current_user.role !== 'admin'"
+            :disabled="current_user.role !== 'branch_admin'"
             v-model="item.name"
           />
           <div class="input-group-append">
             <button
               class="btn btn-sm btn-success"
-              v-if="current_user.role == 'admin'"
+              v-if="current_user.role == 'branch_admin'"
             >
               <img src="../../assets/icons/Done_round.svg" alt="Add_ring" />
             </button>
