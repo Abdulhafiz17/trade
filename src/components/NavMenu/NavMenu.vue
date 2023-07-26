@@ -53,6 +53,12 @@ export default {
           role: ["branch_admin"],
         },
         {
+          icon: "Group.svg",
+          name: "Ta'minotchilar",
+          path: "/suppliers",
+          role: ["branch_admin"],
+        },
+        {
           icon: "Shop.svg",
           name: "Ta'minot",
           path: "/parties",
