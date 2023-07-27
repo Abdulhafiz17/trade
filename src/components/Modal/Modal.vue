@@ -13,7 +13,7 @@ export default {
   },
   computed: {
     modal_size() {
-      return String(this.$props.size || "md").toLocaleLowerCase();
+      return String(this.$props.size || "md").toLowerCase();
     },
   },
   methods: {
