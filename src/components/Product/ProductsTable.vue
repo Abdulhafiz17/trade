@@ -1,9 +1,10 @@
 <script>
 import api from "../../server/api";
+import Barcode from "./Barcode.vue";
 import Pagination from "../Pagination/Pagination.vue";
 export default {
   name: "ProductsTable",
-  components: { Pagination },
+  components: { Barcode, Pagination },
   props: {
     status: null,
     edit: Boolean,
@@ -98,21 +99,21 @@ export default {
           {{
             $util.currency(item.Products.last_price) +
             " " +
-            item.last_currency.currency
+            (item.last_currency?.currency || "")
           }}
         </td>
         <td>
           {{
             $util.currency(item.Products.sotuv_price) +
             " " +
-            item.sotuv_currency.currency
+            (item.sotuv_currency?.currency || "")
           }}
         </td>
         <td>
           {{
             $util.currency(item.Products.vitrina_price) +
             " " +
-            item.vitrina_currency.currency
+            (item.vitrina_currency?.currency || "")
           }}
         </td>
         <td v-if="options">
@@ -126,7 +127,11 @@ export default {
           >
             <img src="../../assets/icons/Edit.svg" alt="Edit" />
           </RouterLink>
-          <button class="btn btn-sm btn-primary mx-1" v-if="false">
+          <button
+            class="btn btn-sm btn-primary mx-1"
+            @click="$refs.barcode.start(item.Products.code)"
+            v-if="true"
+          >
             <i class="fa fa-barcode"></i>
           </button>
           <RouterLink
@@ -150,6 +155,8 @@ export default {
       </tr>
     </tfoot>
   </table>
+
+  <Barcode ref="barcode" />
 </template>
 
 <style scoped lang="scss">

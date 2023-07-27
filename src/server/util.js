@@ -4,7 +4,7 @@ export default {
   payment_types: ["naqd", "plastik", "click"],
   units: ["dona", "kg", "litr", "metr"],
   currency(number = Number()) {
-    return Intl.NumberFormat().format(Number(number).toFixed(2));
+    return Intl.NumberFormat("RU-ru").format(Number(number).toFixed(2));
   },
   tel(number) {
     return String(
