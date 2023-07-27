@@ -79,7 +79,7 @@ export default {
         {
           icon: "Widget_add.svg",
           name: "Mahsulotlar qoldig'i",
-          path: "/",
+          path: "/revision",
           role: ["branch_admin"],
         },
         {

@@ -130,6 +130,12 @@ export default createRouter({
       component: () => import("../views/Product/Product.vue"),
     },
     {
+      path: "/revision",
+      name: "Mahsulotlar qoldig'i",
+      beforeEnter: auth,
+      component: () => import("../views/Revision/Revision.vue"),
+    },
+    {
       path: "/return",
       name: "Mahsulot qaytarish",
       beforeEnter: auth,
