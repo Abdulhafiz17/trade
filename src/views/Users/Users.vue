@@ -150,7 +150,10 @@ export default {
                   <span>{{ item.balance }}</span>
                 </li>
               </ul>
-              <ul class="list-group" v-if="current_user.role !== 'crud_admin'">
+              <ul
+                class="list-group"
+                v-if="!['crud_admin', 'admin'].includes(current_user.role)"
+              >
                 <li class="list-group-item" :toggle-collapse="'pay-' + item.id">
                   <span>Pul berish</span>
                 </li>
