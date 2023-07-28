@@ -96,7 +96,7 @@ export default {
             <td>{{ $util.currency(item.Trades.price) }} so'm</td>
             <td>{{ $util.currency(item.Trades.discount) }} so'm</td>
             <td>
-              {{ returnedProduct(item)?.Returned_products?.quantity }}
+              {{ returnedProduct(item)?.Returned_products?.quantity || 0 }}
               {{ item.Trades.product.olchov_birligi }}
             </td>
             <td>
