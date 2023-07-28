@@ -31,7 +31,7 @@ export default {
   <Modal size="lg" ref="orderModal">
     <template #body>
       <Order :order-id="order_id" />
-      <Trade :returnable="returnable" :order-id="order_id" />
+      <Trade :order-id="order_id" />
     </template>
     <template #footer>
       <button class="btn btn-outline-info" @click="routerToReturn()">

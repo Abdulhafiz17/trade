@@ -106,7 +106,7 @@ export default {
                 ) + " so'm"
               }}
             </td>
-            <td v-if="returnable && $route.path == '/return'">
+            <td v-if="returnable">
               <button
                 class="btn btn-sm btn-outline-info"
                 @click="$emit('openModal', item)"
