@@ -78,7 +78,7 @@ export default {
                 <strong>
                   {{ $util.currency(item.Expenses.money) }}
                 </strong>
-                {{ item.Currencies?.currency }}
+                {{ item.currency }}
               </td>
               <td>{{ item.Expenses.comment }}</td>
               <td>{{ item.user }}</td>

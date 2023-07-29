@@ -47,7 +47,9 @@ export default {
           source: item.id,
           comment: "",
         };
-        this.$util.toast();
+        this.$util.toast().then(() => {
+          this.get();
+        });
       });
     },
   },
