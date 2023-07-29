@@ -15,6 +15,7 @@ export default {
   party_id: 0,
   supply_id: 0,
   fixed_expense_id: 0,
+  control_id: 0,
   loan_id: 0,
   code: 0,
   source: 0,

@@ -205,6 +205,29 @@ export default {
   update_product_composition(data) {
     return server(`update_product_composition`, "put", data);
   },
+  // product control
+  get_controls(p = query) {
+    const status = p.status ? `status=${p.status}` : ``;
+    return server(`get_controls?${status}&page=${p.page}&limit=${p.limit}`);
+  },
+  get_products_control(p = query) {
+    const status = p.status ? `status=${p.status}` : ``;
+    return server(
+      `get_products_control?control_id=${p.control_id}&${status}&code=${p.code}&page=${p.page}&limit=${p.limit}`
+    );
+  },
+  create_control(data) {
+    return server(`create_control`, "post", data);
+  },
+  remove_control(data) {
+    return server(`remove_control`, "delete", data);
+  },
+  update_product_control(data) {
+    return server(`update_product_control`, "put", data);
+  },
+  change_product_quantity(data) {
+    return server(`change_product_quantity`, "put", data);
+  },
   // unit
   get_olchov_birliglar(p = query) {
     return server(`get_olchov_birliglar/${p.code}`);
