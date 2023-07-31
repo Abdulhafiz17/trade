@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-let timeout = null;
+let loading_index = 0;
 
 export default createStore({
   state() {
@@ -30,12 +30,13 @@ export default createStore({
       state.user = user;
     },
     setLoading(state, loading) {
-      clearTimeout(timeout);
-      if (loading)
-        timeout = setTimeout(() => {
-          state.loading = loading;
-        }, 100);
-      else state.loading = loading;
+      if (loading) {
+        state.loading = loading;
+        loading_index++;
+      } else {
+        loading_index--;
+        if (!loading_index) state.loading = loading;
+      }
     },
     toggleNav(state, nav) {
       state.show_nav = nav;
