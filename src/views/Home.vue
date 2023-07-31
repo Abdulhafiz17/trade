@@ -20,5 +20,4 @@ export default {
       <h2 class="title">HOME</h2>
     </div>
   </div>
-  <RouterLink to="/statistic">Hisobotlar</RouterLink>
 </template>
