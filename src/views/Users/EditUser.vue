@@ -5,8 +5,14 @@ export default {
   props: {
     user: null,
   },
+  data() {
+    return {
+      password: "",
+    };
+  },
   methods: {
     put() {
+      this.$props.user.password = this.password || "";
       api.update_user(this.$props.user).then(() => {
         this.$util.toast();
       });
@@ -78,7 +84,7 @@ export default {
               type="password"
               class="form-control"
               placeholder="Parol:"
-              v-model="user.password"
+              v-model="password"
             />
           </label>
         </div>

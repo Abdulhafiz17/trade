@@ -31,7 +31,6 @@ export default {
     getUser() {
       api.this_user({ user_id: this.user_id }).then((res) => {
         this.user = res.data;
-        this.user.password = "";
       });
     },
   },
