@@ -38,7 +38,7 @@ export default {
       <form @submit.prevent="post()">
         <div class="row gap-2">
           <div class="col-12">
-            <img src="../../assets/images/crud-logo.png" alt="crud-logo" />
+            <img src="../../assets/images/insell-logo.png" alt="insell-logo" />
           </div>
           <div class="col-12">
             <h2>XUSH KELIBSIZ</h2>
@@ -119,7 +119,6 @@ main {
 
 .sign-in-card img {
   width: 120px;
-  height: 120px;
 }
 
 h2 {
