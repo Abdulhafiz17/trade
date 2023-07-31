@@ -106,6 +106,11 @@ export default {
                           box-sizing: border-box;
                           font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
                       }
+
+                      @page {
+                        margin: 0;
+                        size: auto;
+                      }
       
                       @meida print {
                           .receipt {
