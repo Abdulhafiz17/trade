@@ -74,25 +74,13 @@ export default {
       <form class="row gap-2" id="add-user-form" @submit.prevent="postUser()">
         <label class="col-12">
           Ism
-          <input
-            type="text"
-            class="form-control"
-            required
-            v-model="user.name"
-          />
+          <input type="text" class="form-control" required v-model="user.name" />
         </label>
         <label class="col-12">
           Telfon raqam
           <div class="input-group" :tel="$util.tel(user.phone)">
             <div class="input-group-text">+998</div>
-            <input
-              type="tel"
-              class="form-control"
-              minlength="9"
-              maxlength="9"
-              required
-              v-model="user.phone"
-            />
+            <input type="tel" class="form-control" minlength="9" maxlength="9" required v-model="user.phone" />
           </div>
         </label>
         <label class="col-12">
@@ -104,28 +92,20 @@ export default {
             <option value="branch_admin" v-if="current_user.role == 'admin'">
               Filial admin
             </option>
+            <option value="seller" v-if="current_user.role == 'branch_admin'">
+              Sotuvchi
+            </option>
           </select>
         </label>
         <div class="col-12">
           <div class="row">
             <label class="col-6">
               Foydalanuvchi nomi
-              <input
-                type="text"
-                class="form-control"
-                minlength="5"
-                required
-                v-model="user.username"
-              />
+              <input type="text" class="form-control" minlength="5" required v-model="user.username" />
             </label>
             <label class="col-6">
               Parol
-              <input
-                type="password"
-                class="form-control"
-                required
-                v-model="user.password"
-              />
+              <input type="password" class="form-control" required v-model="user.password" />
             </label>
           </div>
         </div>
@@ -133,10 +113,7 @@ export default {
     </template>
     <template #footer>
       <button class="btn btn-success" form="add-user-form">
-        <img
-          src="../../assets/icons/Done_round-white.svg"
-          alt="Done_round-white"
-        />
+        <img src="../../assets/icons/Done_round-white.svg" alt="Done_round-white" />
       </button>
     </template>
   </Modal>

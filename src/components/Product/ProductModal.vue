@@ -3,7 +3,7 @@ import api from "../../server/api";
 import Barcode from "./Barcode.vue";
 import Pagination from "../Pagination/Pagination.vue";
 export default {
-  name: "ProductsTable",
+  name: "ProductModal",
   components: { Barcode, Pagination },
   props: {
     status: null,
@@ -69,7 +69,6 @@ export default {
         <th>Minimal narx</th>
         <th>Sotuv narx</th>
         <th>Vitrina narx</th>
-        <th v-if="options"></th>
       </tr>
     </thead>
     <tbody>
@@ -116,7 +115,7 @@ export default {
             (item.vitrina_currency?.currency || "")
           }}
         </td>
-        <td v-if="options">
+        <!-- <td v-if="options">
           <RouterLink class="btn btn-sm btn-warning mx-1" :to="{
             path: '/product',
             query: { product_code: item.Products.code, content: 'edit' },
@@ -132,16 +131,10 @@ export default {
           }" v-if="info">
             <img src="../../assets/icons/Info.svg" alt="Info" />
           </RouterLink>
-        </td>
+        </td> -->
       </tr>
     </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="13">
-          <Pagination v-model="products" @get="getProducts" />
-        </td>
-      </tr>
-    </tfoot>
+
   </table>
 
   <Barcode ref="barcode" />

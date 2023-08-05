@@ -1,6 +1,12 @@
 <script>
 import api from "../../server/api";
+import Products from "../Product/Products.vue";
+import ProductModal from "../../components/Product/ProductModal.vue";
 export default {
+  components: {
+    Products,
+    ProductModal
+  },
   name: "Trades",
   props: {
     order: null,
@@ -8,6 +14,8 @@ export default {
   data() {
     return {
       code: "",
+      search: "",
+      count: 0,
       product: null,
       units: [],
       unit_id: 0,
@@ -24,7 +32,17 @@ export default {
         order_id: 0,
         status: true,
       },
+      searchProduct: "",
+      status: ["quantity_false", "quantity_true", "price_false", "price_true"],
       trades: [],
+      products: {
+        current_page: 0,
+        pages: 1,
+        limit: 25,
+        data: [],
+      },
+      prdct: [],
+      currencies: []
     };
   },
   methods: {
@@ -37,6 +55,9 @@ export default {
         api.get_trades(param).then((res) => {
           this.trades = res.data.trades;
           this.$parent.balance = res.data.order_balance;
+          this.trades.forEach((item, i) => {
+            this.prdct.push({ count: 1 })
+          })
         });
       } else this.trades = [];
     },
@@ -81,28 +102,44 @@ export default {
         });
       });
     },
-    getProductsForTrade() {
-      if (this.code)
-        api.get_products_for_trade({ code: this.code }).then((res) => {
-          if (res.data) {
-            this.product = res.data;
-            this.trade = {
-              code: this.product.Products.code,
-              o_pr_id: 0,
-              pr_comp_id: 0,
-              quantity: 1,
-              price: this.product.vitrina,
-              discount: 0,
-              order_id: this.order.Orders.id,
-              status: true,
-            };
-            this.getProductUnits();
-          } else {
-            this.$util.toast("warning", "Mahsulot mavjud emas !");
-            this.code = "";
-          }
-        });
-    },
+    // getProductsForTrade() {
+    //   // for (let i = 0; i < this.trades.length; i++) {
+    //   //   if (this.trades[i]?.Trades?.product.category.name == this.code || this.trades[i]?.Trades?.product.product_type.name == this.code) {
+    //   //     this.product = [this.trades[i]]
+    //   //     this.trade = {
+    //   //       code: this.product.Products.code,
+    //   //       o_pr_id: 0,
+    //   //       pr_comp_id: 0,
+    //   //       quantity: 1,
+    //   //       price: this.product.vitrina,
+    //   //       discount: 0,
+    //   //       order_id: this.order.Orders.id,
+    //   //       status: true,
+    //   //     };
+    //   //     this.getProductUnits();
+    //   //   }
+    //   // }
+    //   // if (this.code)
+    //   //   api.get_products_for_trade({ code: this.code }).then((res) => {
+    //   //     if (res.data) {
+    //   //       this.product = res.data;
+    //   //       this.trade = {
+    //   //         code: this.product.Products.code,
+    //   //         o_pr_id: 0,
+    //   //         pr_comp_id: 0,
+    //   //         quantity: 1,
+    //   //         price: this.product.vitrina,
+    //   //         discount: 0,
+    //   //         order_id: this.order.Orders.id,
+    //   //         status: true,
+    //   //       };
+    //   //       this.getProductUnits();
+    //   //     } else {
+    //   //       this.$util.toast("warning", "Mahsulot mavjud emas !");
+    //   //       this.code = "";
+    //   //     }
+    //   //   });
+    // },
     getProductUnits() {
       api.get_olchov_birliglar({ code: this.code }).then((res) => {
         this.units = res.data;
@@ -121,6 +158,79 @@ export default {
         this.trade.quantity = 0;
       }
     },
+    focusInput() {
+      const searchInput = document.querySelector('.search-input')
+      const searchList = document.querySelector('.search-list')
+      searchInput.addEventListener('keyup', () => {
+        document.querySelector('.search-form').classList.add('form-active')
+        this.getProducts()
+      })
+    },
+    getProducts() {
+      const param = {
+        search: this.search,
+        status: "price_true",
+        branch_id: this.branch_id,
+        page: 0,
+        limit: 25,
+      };
+      // this.$store.dispatch("setLoading", false)
+      api.get_products(param).then((res) => {
+        this.products = res.data.data;
+      });
+    },
+    selectProduct(item) {
+      console.log(item);
+      for (let cur = 0; cur < this.currencies.length; cur++) {
+        if (this.order && item.last_currency.currency == this.currencies[cur].currency) {
+          const trade = {
+            tarozi_id: 0,
+            code: item.Products.code,
+            o_pr_id: 0,
+            pr_comp_id: 0,
+            quantity: 1,
+            price: item.Products.vitrina_price * this.currencies[cur].price,
+            discount: 0,
+            order_id: this.order.Orders.id,
+            status: "true",
+          }
+          api.to_trade(trade).then((res) => {
+            this.code = "";
+            this.composition_status = false;
+            this.composition = null;
+            this.getTrades();
+            this.getProductUnits()
+            this.search = ''
+          });
+        }
+      }
+      document.querySelector('.search-form').classList.remove('form-active')
+    },
+    onSearch() {
+      this.$refs.productModal.search = this.searchProduct;
+      this.$refs.productModal.getProducts();
+      this.searchProduct = ""
+    },
+    getCurrency() {
+      api.get_currencies().then(res => {
+        this.currencies = res.data
+        console.log(res.data);
+      })
+    },
+  },
+  computed: {
+    current_user() {
+      return this.$store.getters.user;
+    },
+    branch_id() {
+      return this.$route.query.branch_id || this.current_user.branch_id;
+    },
+    options() {
+      return this.$props.edit || this.$props.barcode;
+    },
+  },
+  mounted() {
+    this.getCurrency()
   },
 };
 </script>
@@ -128,27 +238,28 @@ export default {
 <template>
   <div class="row">
     <div class="col-md-8 py-1">
-      <form
-        class="input-group input-group-sm"
-        @submit.prevent="getProductsForTrade()"
-      >
-        <input
-          type="search"
-          class="form-control"
-          placeholder="Mahsulot code:"
-          v-model="code"
-          :disabled="!order"
-        />
+      <form class="input-group input-group-sm search-form" @click="focusInput">
+        <input type="search" class="form-control search-input" placeholder="Mahsulot izlash:" v-model="search"
+          :disabled="!order" />
         <button class="btn btn-success">
-          <img src="../../assets/icons/Add_square.svg" alt="" />
+          <img src="../../assets/icons/Search_alt.svg" alt="" />
         </button>
+        <div class="product-search-box bg-white rounded-2 border p-2">
+          <ul class="list-unstyled mb-0 search-list">
+            <li v-if="products.length" v-for="item in products" :key="item" @click="selectProduct(item)">{{ item.category
+              +
+              " - " + item.Products.product_type.name + " - " + item.Products.product_type.name2 }}
+            </li>
+          </ul>
+        </div>
       </form>
     </div>
     <div class="col-md-4 py-1">
-      <button class="btn btn-sm btn-primary w-100">Mahsulotlar</button>
+      <button class="btn btn-sm btn-primary w-100" data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop">Mahsulotlar</button>
     </div>
   </div>
-  <div class="table-responsive py-1" style="height: 60vh">
+  <div class="table-responsive py-1 pt-4" style="height: 60vh">
     <table class="table table-sm table-hover">
       <thead>
         <tr>
@@ -178,56 +289,53 @@ export default {
           </td>
           <td>
             <div class="input-group input-group-sm">
-              <input
-                type="number"
-                class="form-control"
-                min="0"
-                step="any"
-                placeholder="hajm:"
-                v-model="item.sum_quantity"
-                @change="updateTrade(item)"
-              />
+              <input type="number" class="form-control" min="0" step="any" placeholder="hajm:" v-model="prdct[i].count"
+                @change="updateTrade(item)" />
               <div class="input-group-text">dona</div>
             </div>
           </td>
           <td>
-            <div
-              class="input-group input-group-sm"
-              :currency="$util.currency(item.Trades.price)"
-            >
-              <input
-                type="number"
-                class="form-control"
-                min="0"
-                step="any"
-                placeholder="hajm:"
-                v-model="item.Trades.price"
-                @change="updateTrade(item)"
-              />
-              <div class="input-group-text">so'm</div>
+            <div class="input-group input-group-sm" :currency="$util.currency(item.Trades.price)">
+              <input type="number" class="form-control" min="0" step="any" placeholder="hajm:" v-model="item.Trades.price"
+                @change="updateTrade(item)" />
+              <div class="input-group-text hover-price position-relative">so'm
+                <div class="hover-box position-absolute">
+                  <div class="d-flex me-1">
+                    <p class="text-white price-text">Vitrina narxi: </p>
+                    <p class="text-white price-text" v-if="item.Trades.product.currency.currency == '$'">{{
+                      item.Trades.product.vitrina_price * 11650 }}</p>
+                    <p class="text-white price-text" v-if="item.Trades.product.currency.currency != '$'">{{
+                      item.Trades.product.vitrina_price }}</p>
+                  </div>
+                  <div class="d-flex me-1">
+                    <p class="text-white price-text">Tan narxi: </p>
+                    <p class="text-white price-text" v-if="item.Trades.product.currency.currency == '$'">{{
+                      item.Trades.product.tan_narx * 11650 }}</p>
+                    <p class="text-white price-text" v-if="item.Trades.product.currency.currency != '$'">{{
+                      item.Trades.product.tan_narx }}</p>
+                  </div>
+                  <div class="d-flex ">
+                    <p class="text-white price-text">Sotuv narxi: </p>
+                    <p class="text-white price-text" v-if="item.Trades.product.currency.currency == '$'">{{
+                      item.Trades.product.sotuv_price * 11650 }}</p>
+                    <p class="text-white price-text" v-if="item.Trades.product.currency.currency != '$'">{{
+                      item.Trades.product.sotuv_price }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </td>
           <td>
-            <div
-              class="input-group input-group-sm"
-              :currency="$util.currency(item.Trades.discount)"
-            >
-              <input
-                type="number"
-                class="form-control"
-                min="0"
-                step="any"
-                placeholder="hajm:"
-                v-model="item.Trades.discount"
-                @change="updateTrade(item)"
-              />
+            <div class="input-group input-group-sm" :currency="$util.currency(item.Trades.discount)">
+              <input type="number" class="form-control" min="0" step="any" placeholder="hajm:"
+                v-model="item.Trades.discount" @change="updateTrade(item)" />
               <div class="input-group-text">so'm</div>
             </div>
           </td>
           <td>
             {{
               $util.currency(
-                (item.Trades.price - item.Trades.discount) * item.sum_quantity
+                (item.Trades.price - item.Trades.discount) * prdct[i].count
               ) + " so'm"
             }}
           </td>
@@ -241,118 +349,63 @@ export default {
     </table>
   </div>
 
-  <Modal ref="addTradeModal">
-    <template #header>
-      <h5>Mahsulot qo'shish</h5>
-      <p>
-        {{
-          product.Products.category.name +
-          " - " +
-          product.Products.product_type.name +
-          " - " +
-          product.Products.product_type.name2
-        }}
-      </p>
-      <strong>{{ $util.currency(product.vitrina) + " so'm" }}</strong>
-    </template>
-    <template #body>
-      <form class="row gap-2" @submit.prevent="createTrade()" id="trade-form">
-        <div class="col-12">
-          <button
-            type="button"
-            class="btn btn-light w-100"
-            :class="composition_status ? 'bg-primary text-light' : ''"
-            @click="composition_status = !composition_status"
-          >
-            Qismga bo'lib sotish
-            <i class="fa fa-check" v-if="composition_status"></i>
-          </button>
+  <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="d-block me-0 ms-auto btn-close mb-3" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Mahsulotlar</h1>
+            <form @submit.prevent="onSearch">
+              <div class="input-group">
+                <input type="search" class="form-control" placeholder="Qidiruv:" v-model="searchProduct" />
+                <button class="btn btn-primary" type="submit">
+                  <img src="../../assets/icons/Search_alt.svg" alt="Search_alt" />
+                </button>
+              </div>
+            </form>
+          </div>
+          <Tab :tabs="[`Narx belgilangan`, `Narx belgilanmagan`, `Qoldiq tugagan`]">
+            <template #1>
+              <ProductModal status="price_true" edit barcode info ref="productModal" />
+            </template>
+            <template #2>
+              <ProductModal status="price_false" edit ref="productModal" />
+            </template>
+            <template #3>
+              <ProductModal status="quantity_false" ref="productModal" />
+            </template>
+          </Tab>
         </div>
-        <div class="col-12" v-if="composition_status">
-          <div class="list-group border">
-            <li
-              class="list-group-item"
-              :class="{ selected: item == composition }"
-              v-for="item in product.Products.product_type.product_composition"
-              :key="item"
-              @click="composition ? (composition = null) : (composition = item)"
-            >
-              <p>{{ item.name }}</p>
-              <span>{{ item.quantity + " " + item.olchov_birligi }}</span>
-            </li>
-          </div>
-        </div>
-        <label class="col-12">
-          Miqdor
-          <div class="input-group">
-            <input
-              type="number"
-              class="form-control"
-              min="0"
-              step="any"
-              v-model="unit_quantity"
-            />
-            <select class="form-select" v-model="unit_id" @change="countUnit()">
-              <option v-for="item in units" :key="item" :value="item.id">
-                {{ item.olchov }}
-              </option>
-            </select>
-            <input
-              type="number"
-              class="form-control"
-              min="0"
-              step="any"
-              required
-              v-model="trade.quantity"
-            />
-            <div class="input-group-text">dona</div>
-          </div>
-        </label>
-        <label class="col-12">
-          Narx
-          <div class="input-group" :currency="$util.currency(trade.price)">
-            <input
-              type="number"
-              class="form-control"
-              min="0"
-              step="any"
-              required
-              v-model="trade.price"
-            />
-            <div class="input-group-text">so'm</div>
-          </div>
-        </label>
-        <label class="col-12">
-          Chegirma
-          <div class="input-group" :currency="$util.currency(trade.discount)">
-            <input
-              type="number"
-              class="form-control"
-              min="0"
-              step="any"
-              v-model="trade.discount"
-            />
-            <div class="input-group-text">so'm</div>
-          </div>
-        </label>
-      </form>
-    </template>
-    <template #footer>
-      <span>Mahsulot kiritilsinmi ?</span>
-      <button class="btn btn-sm p-1 btn-success mx-2" form="trade-form">
-        <img src="../../assets/icons/Add_square.svg" alt="Add_square" />
-      </button>
-      <button
-        class="btn btn-sm p-1 btn-danger"
-        @click="$refs.addTradeModal.closeModal()"
-      >
-        <img src="../../assets/icons/Cancel-white.svg" alt="Cancel-white" />
-      </button>
-    </template>
-  </Modal>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
+form {
+  position: relative;
+}
+
+.product-search-box {
+  display: none;
+}
+
+.form-active .product-search-box {
+  position: absolute;
+  display: block;
+  top: 40px;
+  width: 100%;
+  z-index: 3;
+}
+
+.search-list {
+  & li {
+    cursor: pointer;
+  }
+}
+
 table {
   font-size: small;
 
@@ -369,6 +422,41 @@ table {
     }
   }
 }
+
+.modal-dialog {
+  max-width: 80%;
+}
+
+.modal-body {
+  height: 60vh;
+  overflow-y: scroll;
+}
+
+.hover-price {
+  transition: 0.5s ease;
+
+  .hover-box {
+    content: "";
+    transform: scale(0)
+  }
+
+  .price-text {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  &:hover .hover-box {
+    top: -50px;
+    right: 0;
+    border-radius: 4px;
+    padding: 4px;
+    z-index: 2;
+    color: #fff;
+    background-color: darkslategray;
+    transform: scale(1);
+  }
+}
+
 
 .selected {
   background-color: var(--bs-success);

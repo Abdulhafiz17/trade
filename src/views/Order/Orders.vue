@@ -36,17 +36,10 @@ export default {
     <strong>Buyurtmalar</strong>
     <div class="orders">
       <button class="add-order" @click="addOrder()">
-        <img
-          src="../../assets/icons/Add_square_green.svg"
-          alt="Add_square_green"
-        />
+        <img src="../../assets/icons/Add_square_green.svg" alt="Add_square_green" />
       </button>
       <div class="btn-group" v-for="item in orders.data" :key="item">
-        <button
-          class="order"
-          :class="{ active: item.Orders.id == order.Orders.id }"
-          @click="$emit('update:order', item)"
-        >
+        <button class="order" :class="{ active: item.Orders.id == order.Orders.id }" @click="$emit('update:order', item)">
           №{{ item.Orders.ordinal_number }}
         </button>
         <button class="delete" @click="removeOrder(item.Orders.id)">
@@ -71,7 +64,7 @@ main {
     padding: 0.5rem;
     display: flex;
     gap: 1rem;
-    background-color: whitesmoke;
+    background-color: #e0e0e0;
     border-radius: 10px;
     overflow: auto;
 

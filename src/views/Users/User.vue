@@ -30,6 +30,7 @@ export default {
   methods: {
     getUser() {
       api.this_user({ user_id: this.user_id }).then((res) => {
+        console.log(res.data);
         this.user = res.data;
       });
     },
@@ -45,10 +46,7 @@ export default {
           <h2 class="title">HODIM</h2>
         </div>
         <div class="col-md-6">
-          <button
-            class="btn btn-sm btn-primary float-end"
-            @click="$router.go(-1)"
-          >
+          <button class="btn btn-sm btn-primary float-end" @click="$router.go(-1)">
             ⇽
           </button>
         </div>
