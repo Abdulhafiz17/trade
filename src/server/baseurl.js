@@ -1,1 +1,1 @@
-export default 'https://lider-trade-api.crud.uz/';
+export default 'https://tradeproject-api.crud.uz/';
