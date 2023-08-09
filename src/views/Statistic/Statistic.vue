@@ -106,7 +106,7 @@ export default {
 
     <div class="col-12">
       <div class="row table-responsive" style="max-height: 78vh">
-        <div class="col-md-6 mb-3" v-for="(item, i) in statistics.data" :key="item">
+        <div class="col-md-6 mb-3" v-for="(item, i) in statistics.data.reverse()" :key="item">
           <div class="card">
             <div class="card-body">
               <strong>{{ item.day }}</strong>
