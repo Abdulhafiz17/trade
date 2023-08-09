@@ -21,15 +21,23 @@ export default {
   methods: {
     post() {
       api.token(this.data).then((res) => {
-        this.$store.dispatch("setUser", res.data);
-        this.prepare();
+        this.$util.toast().then(() => {
+          this.$store.dispatch("setUser", res.data);
+          this.prepare();
+        })
+      }).catch(err => {
+        if (err.response.status == 401) {
+          this.$util.toastError().then(() => {
+            this.$store.dispatch("setUser", res.data);
+          })
+        }
       });
     },
     prepare() {
-      this.$router.push("/");
+      this.$router.push("/order");
     },
   },
-};
+}
 </script>
 
 <template>
@@ -46,39 +54,18 @@ export default {
           <div class="col-12">
             <div class="input-group">
               <div class="input-group-text">
-                <img
-                  class="icon"
-                  src="../../assets/icons/User.svg"
-                  alt="user"
-                />
+                <img class="icon" src="../../assets/icons/User.svg" alt="user" />
               </div>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="LOGIN"
-                autofocus
-                required
-                v-model="data.username"
-              />
+              <input type="text" class="form-control" placeholder="LOGIN" autofocus required v-model="data.username" />
             </div>
           </div>
           <div class="col-12">
             <div class="input-group">
               <div class="input-group-text">
-                <img
-                  class="icon"
-                  src="../../assets/icons/Lock.svg"
-                  alt="lock"
-                />
+                <img class="icon" src="../../assets/icons/Lock.svg" alt="lock" />
               </div>
-              <input
-                type="password"
-                class="form-control"
-                placeholder="PAROL"
-                autofocus
-                required
-                v-model="data.password"
-              />
+              <input type="password" class="form-control" placeholder="PAROL" autofocus required
+                v-model="data.password" />
             </div>
           </div>
           <div class="col-12 pt-3">
@@ -147,6 +134,7 @@ button {
   font-size: x-small;
   letter-spacing: 2px;
 }
+
 button:active {
   border-color: white;
 }
