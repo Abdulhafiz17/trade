@@ -24,6 +24,7 @@ export default {
         data_sum: [],
       },
       day: null,
+      daromad: 0
     };
   },
   computed: {
@@ -43,6 +44,7 @@ export default {
       };
       api.get_trade_statistics(param).then((res) => {
         this.statistics = res.data;
+        this.daromad = this.statistics.data_sum[0].total_profit
       });
     },
     countSum(array) {
@@ -64,8 +66,8 @@ export default {
 </script>
 
 <template>
-  <div class="row gap-3">
-    <div class="col-12">
+  <div class="row">
+    <div class="col-12 mb-3">
       <div class="row">
         <div class="col-md-6">
           <h2 class="title">HISOBOTLAR</h2>
@@ -74,10 +76,7 @@ export default {
           <div class="row">
             <div class="col-md-5 mb-1">
               <div class="btn-group float-end">
-                <button
-                  class="btn btn-sm"
-                  @click="$refs.sumStatisticsModal.openModal()"
-                >
+                <button class="btn btn-sm" @click="$refs.sumStatisticsModal.openModal()">
                   Umumiy hisobot
                 </button>
                 <button class="btn btn-sm btn-success">
@@ -88,25 +87,14 @@ export default {
             <form class="col-md-7" @submit.prevent="getStatistics()">
               <div class="row">
                 <div class="col-5">
-                  <input
-                    type="date"
-                    class="form-control"
-                    v-model="filter.from_time"
-                  />
+                  <input type="date" class="form-control" v-model="filter.from_time" />
                 </div>
                 <div class="col-5">
-                  <input
-                    type="date"
-                    class="form-control"
-                    v-model="filter.to_time"
-                  />
+                  <input type="date" class="form-control" v-model="filter.to_time" />
                 </div>
                 <div class="col-2">
                   <button class="btn btn-sm btn-primary">
-                    <img
-                      src="../../assets/icons/search_alt.svg"
-                      alt="search_alt"
-                    />
+                    <img src="../../assets/icons/search_alt.svg" alt="search_alt" />
                   </button>
                 </div>
               </div>
@@ -115,13 +103,10 @@ export default {
         </div>
       </div>
     </div>
+
     <div class="col-12">
-      <div class="row table-responsive" style="max-height: 80vh">
-        <div
-          class="col-md-6 mb-3"
-          v-for="(item, i) in statistics.data"
-          :key="item"
-        >
+      <div class="row table-responsive" style="max-height: 78vh">
+        <div class="col-md-6 mb-3" v-for="(item, i) in statistics.data" :key="item">
           <div class="card">
             <div class="card-body">
               <strong>{{ item.day }}</strong>
@@ -132,7 +117,7 @@ export default {
                     {{
                       $util.currency(
                         item.trade_total_price +
-                          item.trade_from_comp_total_price
+                        item.trade_from_comp_total_price
                       )
                     }}
                     so'm
@@ -144,7 +129,7 @@ export default {
                     {{
                       $util.currency(
                         item.trade_total_tan_narx +
-                          item.trade_from_comp_total_tan_narx
+                        item.trade_from_comp_total_tan_narx
                       )
                     }}
                     so'm
@@ -163,7 +148,7 @@ export default {
                     {{
                       $util.currency(
                         item.trade_total_discount +
-                          item.trade_from_comp_total_discount
+                        item.trade_from_comp_total_discount
                       )
                     }}
                     so'm
@@ -171,10 +156,7 @@ export default {
                 </li>
               </ul>
               <ul class="list-group">
-                <li
-                  class="list-group-item"
-                  :toggle-collapse="'trade-income-collapse' + i"
-                >
+                <li class="list-group-item" :toggle-collapse="'trade-income-collapse' + i">
                   <span>Savdodan kirim:</span>
                   <strong>
                     {{ $util.currency(countSum(item.incomes_trade)) }}
@@ -184,11 +166,7 @@ export default {
                 <Collapse :id="'trade-income-collapse' + i">
                   <li class="list-group-item d-block">
                     <ul class="list-group">
-                      <li
-                        class="list-group-item"
-                        v-for="item1 in item.incomes_trade"
-                        :key="item1"
-                      >
+                      <li class="list-group-item" v-for="item1 in item.incomes_trade" :key="item1">
                         <strong>{{
                           $util.currency(item1.sum_price) +
                           " so'm " +
@@ -200,10 +178,7 @@ export default {
                 </Collapse>
               </ul>
               <ul class="list-group">
-                <li
-                  class="list-group-item"
-                  :toggle-collapse="'loan-income-collapse' + i"
-                >
+                <li class="list-group-item" :toggle-collapse="'loan-income-collapse' + i">
                   <span>Nasiyadan kirim:</span>
                   <strong>
                     {{ $util.currency(countSum(item.incomes_loan)) }}
@@ -213,11 +188,7 @@ export default {
                 <Collapse :id="'loan-income-collapse' + i">
                   <li class="list-group-item d-block">
                     <ul class="list-group">
-                      <li
-                        class="list-group-item"
-                        v-for="item1 in item.incomes_loan"
-                        :key="item1"
-                      >
+                      <li class="list-group-item" v-for="item1 in item.incomes_loan" :key="item1">
                         <strong>{{
                           $util.currency(item1.sum_price) +
                           " so'm " +
@@ -246,13 +217,10 @@ export default {
               </ul>
               <div class="row mt-2">
                 <div class="col">
-                  <button
-                    class="btn btn-info float-end"
-                    @click="
-                      day = item;
-                      $refs.dayModal.openModal();
-                    "
-                  >
+                  <button class="btn btn-info float-end" @click="
+                    day = item;
+                  $refs.dayModal.openModal();
+                  ">
                     <img src="../../assets/icons/Info.svg" alt="Info" />
                   </button>
                 </div>
@@ -261,6 +229,9 @@ export default {
           </div>
         </div>
       </div>
+    </div>
+    <div class="col-12 d-flex justify-content-end pt-2" v-if="statistics">
+      <h3 class="mb-0">Daromad:{{ daromad }}</h3>
     </div>
   </div>
 
@@ -294,11 +265,7 @@ export default {
     </template>
     <template #body>
       <div class="card border-0">
-        <div
-          class="card-body"
-          v-for="(item, i) in statistics.data_sum"
-          :key="item"
-        >
+        <div class="card-body" v-for="(item, i) in statistics.data_sum" :key="item">
           <ul class="list-group">
             <li class="list-group-item">
               <span>Savdo:</span>
@@ -317,7 +284,7 @@ export default {
                 {{
                   $util.currency(
                     item.trade_total_tan_narx +
-                      item.trade_from_comp_total_tan_narx
+                    item.trade_from_comp_total_tan_narx
                   )
                 }}
                 so'm
@@ -336,7 +303,7 @@ export default {
                 {{
                   $util.currency(
                     item.trade_total_discount +
-                      item.trade_from_comp_total_discount
+                    item.trade_from_comp_total_discount
                   )
                 }}
                 so'm
@@ -344,10 +311,7 @@ export default {
             </li>
           </ul>
           <ul class="list-group">
-            <li
-              class="list-group-item"
-              :toggle-collapse="'trade-income-collapse' + i"
-            >
+            <li class="list-group-item" :toggle-collapse="'trade-income-collapse' + i">
               <span>Savdodan kirim:</span>
               <strong>
                 {{ $util.currency(countSum(item.incomes_trade)) }}
@@ -357,11 +321,7 @@ export default {
             <Collapse :id="'trade-income-collapse' + i">
               <li class="list-group-item d-block">
                 <ul class="list-group">
-                  <li
-                    class="list-group-item"
-                    v-for="item1 in item.incomes_trade"
-                    :key="item1"
-                  >
+                  <li class="list-group-item" v-for="item1 in item.incomes_trade" :key="item1">
                     <strong>{{
                       $util.currency(item1.sum_price) + " so'm " + item1.type
                     }}</strong>
@@ -371,10 +331,7 @@ export default {
             </Collapse>
           </ul>
           <ul class="list-group">
-            <li
-              class="list-group-item"
-              :toggle-collapse="'loan-income-collapse' + i"
-            >
+            <li class="list-group-item" :toggle-collapse="'loan-income-collapse' + i">
               <span>Nasiyadan kirim:</span>
               <strong>
                 {{ $util.currency(countSum(item.incomes_loan)) }}
@@ -384,11 +341,7 @@ export default {
             <Collapse :id="'loan-income-collapse' + i">
               <li class="list-group-item d-block">
                 <ul class="list-group">
-                  <li
-                    class="list-group-item"
-                    v-for="item1 in item.incomes_loan"
-                    :key="item1"
-                  >
+                  <li class="list-group-item" v-for="item1 in item.incomes_loan" :key="item1">
                     <strong>{{
                       $util.currency(item1.sum_price) + " so'm " + item1.type
                     }}</strong>
@@ -423,6 +376,7 @@ export default {
 h5 {
   font-weight: 900;
 }
+
 .flex {
   padding: 10px;
   display: flex;

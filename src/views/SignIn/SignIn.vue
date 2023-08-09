@@ -27,7 +27,12 @@ export default {
         })
       }).catch(err => {
         if (err.response.status == 401) {
-          this.$util.toastError().then(() => {
+          this.$util.toastError("error", 'Login yoki parolda xatolik').then(() => {
+            this.$store.dispatch("setUser", res.data);
+          })
+        }
+        if (err.response.status == 500) {
+          this.$util.toastError("error", 'Serverda xatolik!').then(() => {
             this.$store.dispatch("setUser", res.data);
           })
         }

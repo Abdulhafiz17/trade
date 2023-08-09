@@ -4,6 +4,13 @@ import NavMenu from "./components/NavMenu/NavMenu.vue";
 export default {
   name: "App",
   components: { Loading, NavMenu },
+  // mounted() {
+  //   window.addEventListener('offline', function (event) {
+  //     this.$util.toastError('error', "Internet bilan aloqa yo'q!").then(() => {
+  //       this.$store.dispatch("setUser", res.data);
+  //     })
+  //   });
+  // }
 };
 </script>
 
