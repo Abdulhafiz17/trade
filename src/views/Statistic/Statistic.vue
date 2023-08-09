@@ -24,11 +24,11 @@ export default {
         data_sum: [],
       },
       day: null,
-      daromad: 0
     };
   },
   computed: {
     current_user() {
+      console.log(this.filter.from_time, this.filter.to_time);
       return this.$store.getters.user;
     },
   },
@@ -44,7 +44,6 @@ export default {
       };
       api.get_trade_statistics(param).then((res) => {
         this.statistics = res.data;
-        this.daromad = this.statistics.data_sum[0].total_profit
       });
     },
     countSum(array) {
@@ -87,10 +86,10 @@ export default {
             <form class="col-md-7" @submit.prevent="getStatistics()">
               <div class="row">
                 <div class="col-5">
-                  <input type="date" class="form-control" v-model="filter.from_time" />
+                  <input type="date" class="form-control" v-model="filter.from_time" :default="filter.from_time" />
                 </div>
                 <div class="col-5">
-                  <input type="date" class="form-control" v-model="filter.to_time" />
+                  <input type="date" class="form-control" v-model="filter.to_time" :default="filter.to_time" />
                 </div>
                 <div class="col-2">
                   <button class="btn btn-sm btn-primary">
@@ -229,9 +228,6 @@ export default {
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-12 d-flex justify-content-end pt-2" v-if="statistics">
-      <h3 class="mb-0">Daromad:{{ daromad }}</h3>
     </div>
   </div>
 

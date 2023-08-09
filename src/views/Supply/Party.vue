@@ -37,15 +37,9 @@ export default {
           <h2 class="title">TA'MINOT</h2>
         </div>
         <div class="col-md-6">
-          <button
-            class="btn btn-success float-end"
-            @click="$refs.acceptancePartyModal.openModal()"
-            v-if="status == 'false'"
-          >
-            <img
-              src="../../assets/icons/Done_all_round.svg"
-              alt="Done_all_round"
-            />
+          <button class="btn btn-success float-end" @click="$refs.acceptancePartyModal.openModal()"
+            v-if="status == 'false'">
+            <img src="../../assets/icons/Done_all_round.svg" alt="Done_all_round" />
             Ta'minotni yakunlash
           </button>
         </div>
@@ -68,19 +62,11 @@ export default {
       <h5>Ta'minotni yakunlash</h5>
     </template>
     <template #body>
-      <form
-        class="row gap-3"
-        id="acceptance-party-form"
-        @submit.prevent="put()"
-      >
+      <form class="row gap-3" id="acceptance-party-form" @submit.prevent="put()">
         <div class="col-12">
           Valyuta
           <p>Ta'minot uchun bo'lgan chiqimlarni yaxlitlash valyutasi</p>
-          <DataDropdown
-            v-model="currency"
-            type="currency"
-            property="currency"
-          ></DataDropdown>
+          <DataDropdown v-model="currency" type="currency" property="currency"></DataDropdown>
         </div>
         <div class="col-12">
           Tan narxni hisoblash
@@ -90,22 +76,14 @@ export default {
           </p>
           <div class="row">
             <div class="col-6">
-              <button
-                type="button"
-                class="btn btn-light w-100"
-                :class="{ 'bg-primary text-light': party.to_price }"
-                @click="party.to_price = true"
-              >
+              <button type="button" class="btn btn-light w-100" :class="{ 'bg-primary text-light': party.to_price }"
+                @click="party.to_price = true">
                 Narx bo'yicha
               </button>
             </div>
             <div class="col-6">
-              <button
-                type="button"
-                class="btn btn-light w-100"
-                :class="{ 'bg-primary text-light': !party.to_price }"
-                @click="party.to_price = false"
-              >
+              <button type="button" class="btn btn-light w-100" :class="{ 'bg-primary text-light': !party.to_price }"
+                @click="party.to_price = false">
                 Miqdor bo'yicha
               </button>
             </div>
@@ -114,15 +92,7 @@ export default {
       </form>
     </template>
     <template #footer>
-      <button
-        class="btn btn-success"
-        form="acceptance-party-form"
-        :disabled="!currency"
-      >
-        <img
-          src="../../assets/icons/Done_round-white.svg"
-          alt="Done_round-white"
-        /></button
-    ></template>
+      <button class="btn btn-success" form="acceptance-party-form" :disabled="!currency">
+        <img src="../../assets/icons/Done_round-white.svg" alt="Done_round-white" /></button></template>
   </Modal>
 </template>

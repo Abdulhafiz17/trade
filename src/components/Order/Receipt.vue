@@ -45,6 +45,8 @@ export default {
       };
       api.get_orders(param).then((res) => {
         this.order = res.data;
+        console.log(this.order);
+        console.log(res.data);
         this.getTrades();
       });
     },
@@ -111,69 +113,82 @@ export default {
                         margin: 0;
                         size: auto;
                       }
-      
+
                       @meida print {
                           .receipt {
                               width: 100%;
                           }
                       }
-      
+
                       hr {
                       margin: 0.5rem 0;
                       }
-      
+
                       .receipt {
                       padding: 1rem;
                       width: 390px;
                       border: thin solid lightgray;
                       }
-      
+
                       .receipt-image {
                       padding: 0.5rem;
                       display: flex;
                       justify-content: center;
                       align-items: center;
+                      margin-bottom:4px;
                       }
-      
+
                       .receipt-image img {
                       width: 50%;
                       }
-      
+
                       .receipt-image#qrcode img {
                       width: 30%;
                       }
-      
+
+                      .trade-branch{
+                        width:70%;
+                        margin: 0 auto;
+                        text-align:center;
+                      }
+
                       .receipt-body .order div {
                       display: flex;
                       justify-content: space-between;
                       }
-      
+
                       .receipt-body .trades.header {
                       border-bottom: thin solid whitesmoke;
                       font-weight: 500;
                       }
-      
+
                       .receipt-body .trades {
                       display: flex;
+                      margin-bottom:4px;
                       }
-      
+
                       .receipt-body .trades div {
                       font-size: small;
                       }
-      
+
                       .receipt-body .trades div:nth-child(1) {
                       flex: 3;
                       text-align: start;
                       }
-      
+
                       .receipt-body .trades div:nth-child(2) {
                       flex: 1;
                       text-align: center;
                       }
-      
+
                       .receipt-body .trades div:nth-child(3) {
                       flex: 2;
                       text-align: end;
+                      }
+
+                       .thanks span {
+                        display:block;
+                      text-align: center;
                       }
                   </style>
               `;
@@ -194,16 +209,23 @@ export default {
       <div class="receipt-image">
         <img :src="$baseurl + '/uploaded_files/' + logo" alt="logo" />
       </div>
+      <p class="trade-branch" v-if="branch">{{ branch.name + " " + branch.address }}</p>
+      <div class="receipt-location">
+      </div>
       <div class="receipt-body">
         <div class="order">
           <div>
-            <span>{{ order?.Orders?.time.substring(11, 16) }}</span>
-            <span>{{ order?.Orders?.time.substring(0, 10) }}</span>
+            <span>Sana va vaqt</span>
+            <span>{{ order?.Orders?.time.substring(0, 10) }} {{ order?.Orders?.time.substring(11, 16) }}</span>
           </div>
           <hr />
           <div>
             <span>Sotuvchi</span>
-            <span>{{ order?.seller }}</span>
+            <span>{{ order?.user?.name }}</span>
+          </div>
+          <div>
+            <span>Sotuvchi ID</span>
+            <span>{{ order?.user?.id }}</span>
           </div>
           <div>
             <span>Mijoz</span>
@@ -257,6 +279,12 @@ export default {
             <span>{{ $util.currency(order?.balance) }} so'm</span>
           </div>
         </div>
+        <hr />
+        <div class="thanks">
+          <span>Xaridingiz uchun rahmat!</span>
+          <span>Спасибо за покупку!</span>
+          <span>Thank you for your purchase!</span>
+        </div>
       </div>
       <div id="qrcode" class="receipt-image"></div>
     </div>
@@ -270,6 +298,7 @@ export default {
 img {
   width: auto;
 }
+
 hr {
   margin: 0.5rem 0;
 }

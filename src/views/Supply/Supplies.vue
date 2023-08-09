@@ -47,10 +47,7 @@ export default {
 <template>
   <div class="row gap-2">
     <div class="col-12" v-if="status == 'false'">
-      <button
-        class="btn btn-sm btn-success"
-        @click="$refs.supplyModal.openModal()"
-      >
+      <button class="btn btn-sm btn-success" @click="$refs.supplyModal.openModal()">
         <img src="../../assets/icons/Add_square.svg" alt="Add_square" />
         Mahsulot qo'shish
       </button>
@@ -95,10 +92,7 @@ export default {
                 {{ item.currency }}
               </td>
               <td v-if="status == 'false'">
-                <button
-                  class="btn btn-sm btn-danger"
-                  @click="remove(item.Supplies.id)"
-                >
+                <button class="btn btn-sm btn-danger" @click="remove(item.Supplies.id)">
                   <img src="../../assets/icons/del_alt.svg" alt="del_alt" />
                 </button>
               </td>

@@ -73,6 +73,7 @@ export default {
       };
       api.get_orders(param).then((res) => {
         this.orders = res.data;
+        console.log(res.data);
         this.order = res.data.data[0];
         this.$nextTick(() => {
           this.$refs.trades.getTrades();
@@ -290,7 +291,7 @@ export default {
       </form>
     </template>
     <template #footer>
-      <button class="btn btn-success" form="confirm-order">
+      <button class="btn btn-success" form="confirm-order" @click="closeModal">
         <img src="../../assets/icons/Done_round-white.svg" alt="Done_round-white" />
       </button>
     </template>

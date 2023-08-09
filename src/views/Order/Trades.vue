@@ -289,7 +289,7 @@ export default {
           </td>
           <td>
             <div class="input-group input-group-sm">
-              <input type="number" class="form-control" min="0" step="any" placeholder="hajm:" v-model="prdct[i].count"
+              <input type="number" class="form-control" min="0" step="any" placeholder="hajm:" v-model="item.sum_quantity"
                 @change="updateTrade(item)" />
               <div class="input-group-text">dona</div>
             </div>
@@ -335,7 +335,7 @@ export default {
           <td>
             {{
               $util.currency(
-                (item.Trades.price - item.Trades.discount) * prdct[i].count
+                (item.Trades.price - item.Trades.discount) * item.sum_quantity
               ) + " so'm"
             }}
           </td>
