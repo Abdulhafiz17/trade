@@ -1,4 +1,5 @@
 <script>
+import DataDropdownSupply from "../../components/DataDropdown/DataDropdownSupply.vue";
 import api from "../../server/api";
 export default {
   name: "SupplyModal",
@@ -27,9 +28,7 @@ export default {
   },
   computed: {
     disabled() {
-      return (
-        !this.category || !this.currency || !this.market
-      );
+      return (!this.category || !this.currency || !this.market);
     },
   },
   methods: {
@@ -37,14 +36,14 @@ export default {
       this.$refs.addSupplyModal.openModal();
     },
     post() {
-      this.supply.category_name = this.category.name;
+      // this.supply.category_name = this.category.name;
       // this.supply.product_type_name = this.product_type.name;
       // this.supply.product_type_name2 = this.product_type.name2;
       this.supply.currency_id = this.currency.id;
       this.supply.market_id = this.market.id;
       this.supply.party_id = this.$route.query.party_id;
-      console.log(this.supply);
       api.take_supply(this.supply).then(() => {
+        this.addCategory(this.supply.category_name)
         this.category = null;
         this.product_type = null;
         this.currency = null;
@@ -67,12 +66,9 @@ export default {
         });
       });
     },
-    addCategory() {
-      const prom = prompt("Kategoriya nomini kiriting:")
+    addCategory(prom) {
       api.create_category({ name: prom }).then((res) => {
-        location.reload()
-        this.$refs.addSupplyModal.openModal();
-      })
+      });
     },
     // addCurrency() {
     //   const prom = prompt("Kategoriya nomini kiriting:")
@@ -82,6 +78,7 @@ export default {
     //   })
     // },
   },
+  components: { DataDropdownSupply }
 };
 </script>
 
@@ -98,8 +95,8 @@ export default {
         </label>
         <div class="col-12 category">
           Kategoriya
-          <DataDropdown v-model="category" type="category" property="name"></DataDropdown>
-          <i class="fa-solid fa-plus border border-black p-1 rounded-2 text-white bg-success" @click="addCategory"></i>
+          <input class="form-control" type="text" v-model="supply.category_name">
+
         </div>
         <div class="col-12">
           Mahsulot turi

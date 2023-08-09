@@ -224,10 +224,6 @@ export default {
             <span>{{ order?.user?.name }}</span>
           </div>
           <div>
-            <span>Sotuvchi ID</span>
-            <span>{{ order?.user?.id }}</span>
-          </div>
-          <div>
             <span>Mijoz</span>
             <span>{{ order?.Customers?.name || "" }}</span>
           </div>

@@ -100,7 +100,7 @@ export default {
   methods: {
     getProduct() {
       api.get_product({ code: this.product_code }).then((res) => {
-        this.product = res.data;
+        console.log(res.data);
       });
     },
   },
@@ -115,10 +115,7 @@ export default {
           <h2 class="title">MAHSULOT</h2>
         </div>
         <div class="col-md-6">
-          <button
-            class="btn btn-sm btn-primary float-end"
-            @click="$router.go(-1)"
-          >
+          <button class="btn btn-sm btn-primary float-end" @click="$router.go(-1)">
             ⇽
           </button>
         </div>

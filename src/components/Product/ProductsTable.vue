@@ -14,6 +14,8 @@ export default {
   data() {
     return {
       search: "",
+      pr_total: 0,
+      pr_currency: "",
       products: {
         current_page: 0,
         pages: 1,
@@ -47,6 +49,9 @@ export default {
       };
       api.get_products(param).then((res) => {
         this.products = res.data;
+        console.log(res.data.products_sum_price);
+        this.pr_total = res.data.products_sum_price[0].total_price
+        this.pr_currency = res.data.products_sum_price[0].currency
       });
     },
   },
@@ -54,6 +59,7 @@ export default {
 </script>
 
 <template>
+  <h3 v-if="products">Jami: {{ pr_total + " " + pr_currency }}</h3>
   <table class="table table-sm table-hover">
     <thead>
       <tr>

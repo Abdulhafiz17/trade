@@ -93,7 +93,8 @@ export default {
       const second = new Date().getSeconds()
       this.order_confirm.date = `${year}-${month}-${today}`
       this.order_confirm.customer_phone = this.seller.phone
-      this.order_confirm.customer_phone = this.seller.phone
+      this.order_confirm.customer_name = this.customer.phone
+      console.log(this.order_confirm.customer_name)
       api.order_confirmation(this.order_confirm).then(res => {
         this.$util.toast('confirm_order').then(() => {
           this.confirm_order = {

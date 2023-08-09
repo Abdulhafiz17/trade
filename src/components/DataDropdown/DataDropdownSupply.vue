@@ -1,7 +1,7 @@
 <script>
 import api from "../../server/api";
 export default {
-  name: "DataDropdown",
+  name: "DataDropdowSupply",
   props: {
     modelValue: null,
     data: Array,
@@ -122,23 +122,17 @@ export default {
     </button>
     <template #menu>
       <div class="table-responsive" @scroll="scroll($event)">
-        <input type="search" class="form-control form-control-sm mb-1" placeholder="qidiruv:" v-model="search" @keyup="
+        <datalist type="search" class="form-control form-control-sm mb-1" placeholder="qidiruv:" :value="search" @keyup="
           list = [];
         current_page = 0;
         get();
-        " v-if="searchable" />
-        <input type="search" class="form-control form-control-sm mb-1" placeholder="qidiruv:" v-model="search" @keyup="
-          list = [];
-        current_page = 0;
-        get();
-        " v-if="searchable" />
-        <ul class="list">
-          <li v-if="all" @click="update(null)">Hammasi</li>
-          <li v-for="item in data || list" :key="item" @click="update(item)">
+        " v-if="searchable">
+          <option v-for="item in data || list" :key="item" @click="update(item)">
             {{ item?.[property] }}
             {{ property2 ? " - " + item?.[property2] : "" }}
-          </li>
-        </ul>
+          </option>
+        </datalist>
+
       </div>
     </template>
   </dropdown>
