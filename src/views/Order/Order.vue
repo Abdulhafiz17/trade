@@ -1,10 +1,11 @@
 <script>
+import Receipt from "../../components/Order/Receipt.vue";
 import api from "../../server/api";
 import Orders from "./Orders.vue";
 import Trades from "./Trades.vue";
 export default {
   name: "Order",
-  components: { Orders, Trades },
+  components: { Orders, Trades, Receipt },
   data() {
     return {
       order: null,
@@ -31,11 +32,11 @@ export default {
             type: "naqd",
           },
         ],
-        loan_repayment_date: "",
+        loan_repayment_date: null,
         seller_id: 0,
         muddat: 0,
         percent: 0,
-        date: "",
+        date: null,
       },
     };
   },
@@ -83,7 +84,39 @@ export default {
     },
     putOrder() {
       this.order_confirm.order_id = this.order?.Orders.id;
-      console.log(this.order_confirm);
+      const year = new Date().getFullYear()
+      const month = new Date().getMonth()
+      const today = new Date().getDate()
+      const hour = new Date().getHours()
+      const minutes = new Date().getMinutes()
+      const second = new Date().getSeconds()
+      this.order_confirm.date = `${year}-${month}-${today}`
+      this.order_confirm.customer_phone = this.seller.phone
+      this.order_confirm.customer_phone = this.seller.phone
+      api.order_confirmation(this.order_confirm).then(res => {
+        this.$util.toast('confirm_order').then(() => {
+          this.confirm_order = {
+            customer_name: null,
+            customer_phone: null,
+            customer_birthday: null,
+            customer_type: null,
+            discount: null,
+            money: [
+              {
+                paid_money: null,
+                type: "naqd",
+              },
+              {
+                paid_money: null,
+                type: "plastik",
+              },
+            ],
+            loan_repayment_date: null,
+            seller_id: 0,
+          };
+          this.$refs.order_check.start(this.order_confirm.order_id)
+        })
+      })
     },
   },
 };
@@ -262,6 +295,8 @@ export default {
       </button>
     </template>
   </Modal>
+
+  <Receipt ref="order_check" />
 </template>
 
 <style scoped lang="scss">

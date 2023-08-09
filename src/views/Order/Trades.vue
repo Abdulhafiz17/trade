@@ -53,6 +53,7 @@ export default {
           branch_id: this.$parent.current_user.branch_id,
         };
         api.get_trades(param).then((res) => {
+          console.log(res.data.trades);
           this.trades = res.data.trades;
           this.$parent.balance = res.data.order_balance;
           this.trades.forEach((item, i) => {
@@ -177,10 +178,10 @@ export default {
       // this.$store.dispatch("setLoading", false)
       api.get_products(param).then((res) => {
         this.products = res.data.data;
+        console.log(this.products);
       });
     },
     selectProduct(item) {
-      console.log(item);
       for (let cur = 0; cur < this.currencies.length; cur++) {
         if (this.order && item.last_currency.currency == this.currencies[cur].currency) {
           const trade = {
@@ -214,7 +215,6 @@ export default {
     getCurrency() {
       api.get_currencies().then(res => {
         this.currencies = res.data
-        console.log(res.data);
       })
     },
   },
@@ -229,7 +229,7 @@ export default {
       return this.$props.edit || this.$props.barcode;
     },
   },
-  mounted() {
+  created() {
     this.getCurrency()
   },
 };
@@ -308,11 +308,11 @@ export default {
                       item.Trades.product.vitrina_price }}</p>
                   </div>
                   <div class="d-flex me-1">
-                    <p class="text-white price-text">Tan narxi: </p>
+                    <p class="text-white price-text">Minimal narxi: </p>
                     <p class="text-white price-text" v-if="item.Trades.product.currency.currency == '$'">{{
-                      item.Trades.product.tan_narx * 11650 }}</p>
+                      item.Trades.product.last_price * 11650 }}</p>
                     <p class="text-white price-text" v-if="item.Trades.product.currency.currency != '$'">{{
-                      item.Trades.product.tan_narx }}</p>
+                      item.Trades.product.last_price }}</p>
                   </div>
                   <div class="d-flex ">
                     <p class="text-white price-text">Sotuv narxi: </p>
